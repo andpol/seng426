@@ -24,271 +24,260 @@ import com.jmonkey.office.jwp.support.editors.RTFEditor;
 import com.jmonkey.office.jwp.support.editors.TEXTEditor;
 
 /**
-  * Base Editor class for all editors.
-  */
+ * Base Editor class for all editors.
+ */
 public abstract class Editor extends JPanel {
 
-  public static final String[] VALID_CONTENT_TYPES = { "text/plain",
-      "text/html", "text/rtf", "application/x-lexi" };
-  
-  private static final int[] EDITOR_REGISTRY_VERSION = { 1, 0 };
+	public static final String[] VALID_CONTENT_TYPES = { "text/plain", "text/html", "text/rtf",
+			"application/x-lexi" };
 
-  private File m_file = null;
+	private static final int[] EDITOR_REGISTRY_VERSION = { 1, 0 };
 
-  private Registry m_optionRegistry = null;
+	private File m_file = null;
 
-  private UndoManager m_undoManager = null;
-  
-  private EditorActionManager m_editorActionManager;
-  
-  
-  protected Editor(EditorActionManager eam) {
-    m_editorActionManager = eam;
-  }
+	private Registry m_optionRegistry = null;
 
-  protected final ActionListener m_popupListener = new ActionListener() {
-    public void actionPerformed(ActionEvent event) {
-      String command = event.getActionCommand();
-      Action action = m_editorActionManager.getActionByKey(command);
-      if (action == null) {
-        Code.failed("Unknown editor action");
-      }
-      else {
-        action.actionPerformed(event);
-      }
-    }
-  };
+	private UndoManager m_undoManager = null;
 
-  public abstract class FRThread implements Runnable {
-    protected File m_frtFile = null;
-    protected int m_position = 0;
+	private EditorActionManager m_editorActionManager;
 
-    public FRThread(File file) {
-      m_frtFile = file;
-    }
+	protected Editor(EditorActionManager eam) {
+		m_editorActionManager = eam;
+	}
 
-    public FRThread(File file, int position) {
-      m_frtFile = file;
-      m_position = position;
-    }
+	protected final ActionListener m_popupListener = new ActionListener() {
+		public void actionPerformed(ActionEvent event) {
+			String command = event.getActionCommand();
+			Action action = m_editorActionManager.getActionByKey(command);
+			if (action == null) {
+				Code.failed("Unknown editor action");
+			} else {
+				action.actionPerformed(event);
+			}
+		}
+	};
 
-    public abstract void run();
-  }
+	public abstract class FRThread implements Runnable {
+		protected File m_frtFile = null;
+		protected int m_position = 0;
 
-  public abstract class FWThread implements Runnable {
-    protected File m_fwtFile = null;
+		public FRThread(File file) {
+			m_frtFile = file;
+		}
 
-    public FWThread(File file) {
-      m_fwtFile = file;
-    }
+		public FRThread(File file, int position) {
+			m_frtFile = file;
+			m_position = position;
+		}
 
-    public abstract void run();
-  }
+		public abstract void run();
+	}
 
-  public final void activate() {
-    this.requestFocus();
-    m_editorActionManager.activate(this);
-    Code.debug("Activated editor: " + this);
-  }
+	public abstract class FWThread implements Runnable {
+		protected File m_fwtFile = null;
 
-  public abstract void append(File file) throws IOException;
+		public FWThread(File file) {
+			m_fwtFile = file;
+		}
 
-  public final void deactivate() {
-    m_editorActionManager.deactivate(this);
-  }
+		public abstract void run();
+	}
 
-  public abstract void documentSetSelection(int start, int length, 
-      boolean wordsOnly);
+	public final void activate() {
+		this.requestFocus();
+		m_editorActionManager.activate(this);
+		Code.debug("Activated editor: " + this);
+	}
 
-  /**
-   * Returns the content type as a MIME string.
-   */
-  public abstract String getContentType();
+	public abstract void append(File file) throws IOException;
 
-  public abstract Element getCurrentParagraph();
-  
-  public final EditorActionManager getEditorActionManager() {
-    return m_editorActionManager;
-  }
+	public final void deactivate() {
+		m_editorActionManager.deactivate(this);
+	}
 
-  public abstract Element getCurrentRun();
+	public abstract void documentSetSelection(int start, int length, boolean wordsOnly);
 
-  public static Editor createEditorForContentType(String contentType,
-                                                  JWP app) {
-    EditorActionManager eam = app.getEditorActionManager();
-    if (contentType.equals(TEXTEditor.CONTENT_TYPE)) {
-      return new TEXTEditor(eam);
-    }
-    else if (contentType.equals(HTMLEditor.CONTENT_TYPE)) {
-      return new HTMLEditor(eam);
-    }
-    else if (contentType.equals(RTFEditor.CONTENT_TYPE)) {
-      return new RTFEditor(eam);
-    }
-    else {
-      return new TEXTEditor(eam);
-    }
-  }
+	/**
+	 * Returns the content type as a MIME string.
+	 */
+	public abstract String getContentType();
 
-  public static final Editor createEditorForExtension(String extension, 
-                                                      JWP app) {
-    EditorActionManager eam = app.getEditorActionManager();
-    
-    // Is it an HTML File?
-    for (int i = 0; i < HTMLEditor.FILE_EXTENSIONS.length; i++) {
-      if (extension.equalsIgnoreCase(HTMLEditor.FILE_EXTENSIONS[i])) {
-        return new HTMLEditor(eam);
-      }
-    }
+	public abstract Element getCurrentParagraph();
 
-    // Is it an RTF file?
-    for (int i = 0; i < RTFEditor.FILE_EXTENSIONS.length; i++) {
-      if (extension.equalsIgnoreCase(RTFEditor.FILE_EXTENSIONS[i])) {
-        return new RTFEditor(eam);
-      }
-    }
+	public final EditorActionManager getEditorActionManager() {
+		return m_editorActionManager;
+	}
 
-    // Is it a text file?
-    for (int i = 0; i < TEXTEditor.FILE_EXTENSIONS.length; i++) {
-      if (extension.equalsIgnoreCase(TEXTEditor.FILE_EXTENSIONS[i])) {
-        // this is redundant, but we'll include it for uniformity for now.
-        return new TEXTEditor(eam);
-      }
-    }
+	public abstract Element getCurrentRun();
 
-    return new TEXTEditor(eam);
-  }
+	public static Editor createEditorForContentType(String contentType, JWP app) {
+		EditorActionManager eam = app.getEditorActionManager();
+		if (contentType.equals(TEXTEditor.CONTENT_TYPE)) {
+			return new TEXTEditor(eam);
+		} else if (contentType.equals(HTMLEditor.CONTENT_TYPE)) {
+			return new HTMLEditor(eam);
+		} else if (contentType.equals(RTFEditor.CONTENT_TYPE)) {
+			return new RTFEditor(eam);
+		} else {
+			return new TEXTEditor(eam);
+		}
+	}
 
-  public final File getFile() {
-    return m_file;
-  }
+	public static final Editor createEditorForExtension(String extension, JWP app) {
+		EditorActionManager eam = app.getEditorActionManager();
 
-  /**
-   * Returns the content type as a MIME string.
-   */
-  public abstract String[] getFileExtensions();
+		// Is it an HTML File?
+		for (int i = 0; i < HTMLEditor.FILE_EXTENSIONS.length; i++) {
+			if (extension.equalsIgnoreCase(HTMLEditor.FILE_EXTENSIONS[i])) {
+				return new HTMLEditor(eam);
+			}
+		}
 
-  public abstract MutableAttributeSet getInputAttributes();
+		// Is it an RTF file?
+		for (int i = 0; i < RTFEditor.FILE_EXTENSIONS.length; i++) {
+			if (extension.equalsIgnoreCase(RTFEditor.FILE_EXTENSIONS[i])) {
+				return new RTFEditor(eam);
+			}
+		}
 
-  /**
-   * Creates the PopUp Menu for our editors
-   */
-  public final JPopupMenu getPopup() {
-    JPopupMenu popUP = new JPopupMenu();
-    Enumeration e = getRegistry().getKeys("POPUP");
-    while (e.hasMoreElements()) {
-      String key = (String) e.nextElement();
-      if (getRegistry().getBoolean("POPUP", key)) {
-        JMenuItem item = new JMenuItem(key);
-        item.setActionCommand(key);
-        item.addActionListener(m_popupListener);
-        popUP.add(item);
-      }
-    }
-    return popUP;
-  }
+		// Is it a text file?
+		for (int i = 0; i < TEXTEditor.FILE_EXTENSIONS.length; i++) {
+			if (extension.equalsIgnoreCase(TEXTEditor.FILE_EXTENSIONS[i])) {
+				// this is redundant, but we'll include it for uniformity for
+				// now.
+				return new TEXTEditor(eam);
+			}
+		}
 
-  /**
-   * Gets our option registry
-   */
-  protected final Registry getRegistry() {
-    if (m_optionRegistry == null) {
-      try {
-        m_optionRegistry = Registry.loadForClass(this.getClass(),
-                                                 EDITOR_REGISTRY_VERSION);
-        if (m_optionRegistry.sizeOf("POPUP") == 0) {
-          m_optionRegistry.initGroup("POPUP", new String[][] {
-              {"Cut", "true", "boolean"},
-              {"Copy", "true", "boolean"}, 
-              {"Paste", "true", "boolean"}, 
-              {"Undo", "true", "boolean"},
-              {"Redo", "true", "boolean"},
-              {"SelectAll", "true", "boolean"},
-              {"SelectNone", "true", "boolean"}
-          });
-        }
-      }
-      catch (java.io.IOException e) {
-        System.err.println(e.toString());
-        Code.failed(e);
-      }
-    }
-    return m_optionRegistry;
-  }
+		return new TEXTEditor(eam);
+	}
 
-  public final MutableAttributeSet getSimpleAttributeSet() {
-    return new SimpleAttributeSet() {
-      public AttributeSet getResolveParent() {
-        return (getCurrentParagraph() != null) ? 
-            getCurrentParagraph().getAttributes() : null;
-      }
+	public final File getFile() {
+		return m_file;
+	}
 
-      public Object clone() {
-        return new SimpleAttributeSet(this);
-      }
-    };
-  }
+	/**
+	 * Returns the content type as a MIME string.
+	 */
+	public abstract String[] getFileExtensions();
 
-  public abstract JEditorPane getTextComponent();
+	public abstract MutableAttributeSet getInputAttributes();
 
-  public final UndoManager getUndoManager() {
-    if (m_undoManager == null) {
-      m_undoManager = new UndoManager();
-    }
-    return m_undoManager;
-  }
+	/**
+	 * Creates the PopUp Menu for our editors
+	 */
+	public final JPopupMenu getPopup() {
+		JPopupMenu popUP = new JPopupMenu();
+		Enumeration e = getRegistry().getKeys("POPUP");
+		while (e.hasMoreElements()) {
+			String key = (String) e.nextElement();
+			if (getRegistry().getBoolean("POPUP", key)) {
+				JMenuItem item = new JMenuItem(key);
+				item.setActionCommand(key);
+				item.addActionListener(m_popupListener);
+				popUP.add(item);
+			}
+		}
+		return popUP;
+	}
 
-  public abstract void hasBeenActivated(Editor editor);
+	/**
+	 * Gets our option registry
+	 */
+	protected final Registry getRegistry() {
+		if (m_optionRegistry == null) {
+			try {
+				m_optionRegistry = Registry.loadForClass(this.getClass(), EDITOR_REGISTRY_VERSION);
+				if (m_optionRegistry.sizeOf("POPUP") == 0) {
+					m_optionRegistry.initGroup("POPUP", new String[][] {
+							{ "Cut", "true", "boolean" }, { "Copy", "true", "boolean" },
+							{ "Paste", "true", "boolean" }, { "Undo", "true", "boolean" },
+							{ "Redo", "true", "boolean" }, { "SelectAll", "true", "boolean" },
+							{ "SelectNone", "true", "boolean" } });
+				}
+			} catch (java.io.IOException e) {
+				System.err.println(e.toString());
+				Code.failed(e);
+			}
+		}
+		return m_optionRegistry;
+	}
 
-  public abstract void hasBeenDeactivated(Editor editor);
+	public final MutableAttributeSet getSimpleAttributeSet() {
+		return new SimpleAttributeSet() {
+			public AttributeSet getResolveParent() {
+				return (getCurrentParagraph() != null) ? getCurrentParagraph().getAttributes()
+						: null;
+			}
 
-  public final boolean hasFile() {
-    return (m_file != null);
-  }
+			public Object clone() {
+				return new SimpleAttributeSet(this);
+			}
+		};
+	}
 
-  public abstract void insert(File file, int position) throws IOException;
+	public abstract JEditorPane getTextComponent();
 
-  /**
-   * Has the document changed since we loaded/created it?
-   * 
-   * @return boolean
-   */
-  public abstract boolean isChanged();
+	public final UndoManager getUndoManager() {
+		if (m_undoManager == null) {
+			m_undoManager = new UndoManager();
+		}
+		return m_undoManager;
+	}
 
-  /**
-   * Does the document contain any data?
-   * 
-   */
-  public abstract boolean isEmpty();
+	public abstract void hasBeenActivated(Editor editor);
 
-  /**
-   * Does the document contain formatting, or can we write it as plain text
-   * without loosing anything.
-   */
-  public abstract boolean isFormatted();
+	public abstract void hasBeenDeactivated(Editor editor);
 
-  /**
-   * Does the document represent a new file?
-   * 
-   * @return boolean
-   */
-  public abstract boolean isNew();
+	public final boolean hasFile() {
+		return (m_file != null);
+	}
 
-  public abstract void read(File file) throws IOException;
+	public abstract void insert(File file, int position) throws IOException;
 
-  /**
-   * Set the document changed flag.
-   * @param changed boolean
-   */
-  public abstract void setChanged(boolean changed);
+	/**
+	 * Has the document changed since we loaded/created it?
+	 * 
+	 * @return boolean
+	 */
+	public abstract boolean isChanged();
 
-  public abstract void setCurrentParagraph(Element paragraph);
+	/**
+	 * Does the document contain any data?
+	 * 
+	 */
+	public abstract boolean isEmpty();
 
-  public abstract void setCurrentRun(Element run);
+	/**
+	 * Does the document contain formatting, or can we write it as plain text
+	 * without loosing anything.
+	 */
+	public abstract boolean isFormatted();
 
-  public final void setFile(File file) {
-    m_file = file;
-  }
+	/**
+	 * Does the document represent a new file?
+	 * 
+	 * @return boolean
+	 */
+	public abstract boolean isNew();
 
-  public abstract void write(File file) throws IOException;
+	public abstract void read(File file) throws IOException;
+
+	/**
+	 * Set the document changed flag.
+	 * 
+	 * @param changed
+	 *            boolean
+	 */
+	public abstract void setChanged(boolean changed);
+
+	public abstract void setCurrentParagraph(Element paragraph);
+
+	public abstract void setCurrentRun(Element run);
+
+	public final void setFile(File file) {
+		m_file = file;
+	}
+
+	public abstract void write(File file) throws IOException;
 }

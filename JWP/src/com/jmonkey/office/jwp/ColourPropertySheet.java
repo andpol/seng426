@@ -24,199 +24,194 @@ import com.jmonkey.export.Format;
 import com.jmonkey.export.Runtime;
 
 public final class ColourPropertySheet extends JDialog {
-  private JWP m_app;
-  private Properties m_props = null;
-  private boolean m_allowAdd = false;
-  private PairTableModel m_model = null;
+	private JWP m_app;
+	private Properties m_props = null;
+	private boolean m_allowAdd = false;
+	private PairTableModel m_model = null;
 
-  public ColourPropertySheet(JWP app, Properties p, boolean allowAdd) {
-    super(app);
-    m_app = app;
-    m_props = p;
-    m_allowAdd = allowAdd;
-    init();
-    pack();
-    setLocationRelativeTo(app);
-    setVisible(true);
-  }
-  
-  private JWP getMain() {
-    return m_app;
-  }
+	public ColourPropertySheet(JWP app, Properties p, boolean allowAdd) {
+		super(app);
+		m_app = app;
+		m_props = p;
+		m_allowAdd = allowAdd;
+		init();
+		pack();
+		setLocationRelativeTo(app);
+		setVisible(true);
+	}
 
-  private void doExit() {
-    dispose();
-  }
+	private JWP getMain() {
+		return m_app;
+	}
 
-  private void init() {
-    JPanel content = new JPanel();
-    content.setLayout(new BorderLayout());
+	private void doExit() {
+		dispose();
+	}
 
-    JPanel buttonPanel = new JPanel();
-    buttonPanel.setLayout(new BorderLayout());
-    JPanel spacerPanel = new JPanel();
-    spacerPanel.setLayout(new GridLayout());
-    if (m_allowAdd) {
-      JButton addButton = new JButton("Add Colour");
-      addButton.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          String inputValue = JOptionPane
-              .showInputDialog("What is the name of the\ncolour you want to add?");
-          if (inputValue != null) {
-            if (inputValue.trim().length() > 0) {
-              try {
-                m_props.setProperty(inputValue, Format.colorToHex(JColorChooser
-                    .showDialog(getMain(), "Choose a colour...", null)));
-              }
-              catch (Throwable t) {
-                // the colour chooser was most likely
-                // canceled, so ignore the exception.
-              }
-              // redraw the table
-              if (m_model != null) {
-                m_model.fireTableDataChanged();
-              }
-            }
-          }
-        }
-      });
-      spacerPanel.add(addButton);
-    }
+	private void init() {
+		JPanel content = new JPanel();
+		content.setLayout(new BorderLayout());
 
-    JButton closeButton = new JButton("Close");
-    closeButton.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        doExit();
-      }
-    });
-    spacerPanel.add(closeButton);
-    buttonPanel.add(spacerPanel, BorderLayout.EAST);
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new BorderLayout());
+		JPanel spacerPanel = new JPanel();
+		spacerPanel.setLayout(new GridLayout());
+		if (m_allowAdd) {
+			JButton addButton = new JButton("Add Colour");
+			addButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					String inputValue = JOptionPane
+							.showInputDialog("What is the name of the\ncolour you want to add?");
+					if (inputValue != null) {
+						if (inputValue.trim().length() > 0) {
+							try {
+								m_props.setProperty(inputValue, Format.colorToHex(JColorChooser
+										.showDialog(getMain(), "Choose a colour...", null)));
+							} catch (Throwable t) {
+								// the colour chooser was most likely
+								// canceled, so ignore the exception.
+							}
+							// redraw the table
+							if (m_model != null) {
+								m_model.fireTableDataChanged();
+							}
+						}
+					}
+				}
+			});
+			spacerPanel.add(addButton);
+		}
 
-    content.add(buttonPanel, BorderLayout.SOUTH);
+		JButton closeButton = new JButton("Close");
+		closeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				doExit();
+			}
+		});
+		spacerPanel.add(closeButton);
+		buttonPanel.add(spacerPanel, BorderLayout.EAST);
 
-    m_model = new PairTableModel();
-    JTable tbl = new JTable(m_model);
-    content.add(new JScrollPane(tbl), BorderLayout.CENTER);
+		content.add(buttonPanel, BorderLayout.SOUTH);
 
-    tbl.getColumnModel().getColumn(1).setPreferredWidth(5);
-    tbl.getColumnModel().getColumn(1).setCellRenderer(
-        new ColourCellRenderer());
+		m_model = new PairTableModel();
+		JTable tbl = new JTable(m_model);
+		content.add(new JScrollPane(tbl), BorderLayout.CENTER);
 
-    setContentPane(content);
-    addWindowListener(new WindowAdapter() {
-      public void windowClosing(WindowEvent e) {
-        doExit();
-      }
-    });
-  }
+		tbl.getColumnModel().getColumn(1).setPreferredWidth(5);
+		tbl.getColumnModel().getColumn(1).setCellRenderer(new ColourCellRenderer());
 
-  protected final Properties getProperties() {
-    return m_props;
-  }
+		setContentPane(content);
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				doExit();
+			}
+		});
+	}
 
-  private final class ColourCellRenderer extends DefaultTableCellRenderer {
-    private final Color defaultBackground = getBackground();
+	protected final Properties getProperties() {
+		return m_props;
+	}
 
-    private final Color defaultForeground = getForeground();
+	private final class ColourCellRenderer extends DefaultTableCellRenderer {
+		private final Color defaultBackground = getBackground();
 
-    public Component getTableCellRendererComponent(JTable table,
-        Object value, boolean isSelected, boolean hasFocus, int row,
-        int column) {
-      // System.out.println(toString());
-      setValue(value);
-      
-      if (!isSelected & column == 1) {
-        try {
-          Color c = Format.hexToColor((String) value);
-          setBackground(c);
-          setForeground(Runtime.getContrastingTextColor(c));
-        }
-        catch (Throwable t) {
-          // Ignore this, its just a bad colour.
-          Color c = Color.black;
-          setBackground(c);
-          setForeground(Runtime.getContrastingTextColor(c));
-          setValue("#000000");
-        }
-      }
-      else {
-        setBackground(defaultBackground);
-        setForeground(defaultForeground);
-      }
-      return this;
-    }
-  }
+		private final Color defaultForeground = getForeground();
 
-  private final class PairTableModel extends AbstractTableModel {
+		public Component getTableCellRendererComponent(JTable table, Object value,
+				boolean isSelected, boolean hasFocus, int row, int column) {
+			// System.out.println(toString());
+			setValue(value);
 
-    public PairTableModel() {
-      super();
-    }
+			if (!isSelected & column == 1) {
+				try {
+					Color c = Format.hexToColor((String) value);
+					setBackground(c);
+					setForeground(Runtime.getContrastingTextColor(c));
+				} catch (Throwable t) {
+					// Ignore this, its just a bad colour.
+					Color c = Color.black;
+					setBackground(c);
+					setForeground(Runtime.getContrastingTextColor(c));
+					setValue("#000000");
+				}
+			} else {
+				setBackground(defaultBackground);
+				setForeground(defaultForeground);
+			}
+			return this;
+		}
+	}
 
-    public int getRowCount() {
-      return getProperties().size();
-    }
+	private final class PairTableModel extends AbstractTableModel {
 
-    public int getColumnCount() {
-      return 2;
-    }
+		public PairTableModel() {
+			super();
+		}
 
-    public String getColumnName(int columnIndex) {
-      switch (columnIndex) {
-      case 0:
-        return "Colour Name";
-      case 1:
-        return "RGB Hex";
-      default:
-        return null;
-      }
-    }
+		public int getRowCount() {
+			return getProperties().size();
+		}
 
-    public Class getColumnClass(int columnIndex) {
-      switch (columnIndex) {
-      case 0:
-        return java.lang.String.class;
-      case 1:
-        return java.lang.String.class;
-      default:
-        return java.lang.String.class;
-      }
-    }
+		public int getColumnCount() {
+			return 2;
+		}
 
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-      switch (columnIndex) {
-      case 0:
-        return false;
-      case 1:
-        return true;
-      default:
-        return false;
-      }
-    }
+		public String getColumnName(int columnIndex) {
+			switch (columnIndex) {
+			case 0:
+				return "Colour Name";
+			case 1:
+				return "RGB Hex";
+			default:
+				return null;
+			}
+		}
 
-    public Object getValueAt(int rowIndex, int columnIndex) {
-      switch (columnIndex) {
-      case 0:
-        return getProperties().keySet().toArray()[rowIndex].toString();
-      case 1:
-        return getProperties().getProperty(
-            getProperties().keySet().toArray()[rowIndex].toString());
-      default:
-        return "";
-      }
-    }
+		public Class getColumnClass(int columnIndex) {
+			switch (columnIndex) {
+			case 0:
+				return java.lang.String.class;
+			case 1:
+				return java.lang.String.class;
+			default:
+				return java.lang.String.class;
+			}
+		}
 
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-      switch (columnIndex) {
-      case 0:
-        // getProperties().keySet().toArray()[rowIndex] = aValue.toString();
-        break;
-      case 1:
-        getProperties().setProperty(
-            getProperties().keySet().toArray()[rowIndex].toString(),
-            aValue.toString());
-        break;
-      }
-    }
-  }
+		public boolean isCellEditable(int rowIndex, int columnIndex) {
+			switch (columnIndex) {
+			case 0:
+				return false;
+			case 1:
+				return true;
+			default:
+				return false;
+			}
+		}
+
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			switch (columnIndex) {
+			case 0:
+				return getProperties().keySet().toArray()[rowIndex].toString();
+			case 1:
+				return getProperties().getProperty(
+						getProperties().keySet().toArray()[rowIndex].toString());
+			default:
+				return "";
+			}
+		}
+
+		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+			switch (columnIndex) {
+			case 0:
+				// getProperties().keySet().toArray()[rowIndex] =
+				// aValue.toString();
+				break;
+			case 1:
+				getProperties().setProperty(
+						getProperties().keySet().toArray()[rowIndex].toString(), aValue.toString());
+				break;
+			}
+		}
+	}
 }

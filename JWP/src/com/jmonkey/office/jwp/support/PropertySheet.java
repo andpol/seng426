@@ -10,80 +10,80 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 public final class PropertySheet extends JPanel {
-  private Properties m_properties = null;
-  private Object[] m_keys = null;
-  
-  private final class PairTableModel extends AbstractTableModel {
+	private Properties m_properties = null;
+	private Object[] m_keys = null;
 
-    public PairTableModel() {
-      super();
-    }
+	private final class PairTableModel extends AbstractTableModel {
 
-    public int getRowCount() {
-      return getProperties().size();
-    }
+		public PairTableModel() {
+			super();
+		}
 
-    public int getColumnCount() {
-      return 2;
-    }
+		public int getRowCount() {
+			return getProperties().size();
+		}
 
-    public String getColumnName(int columnIndex) {
-      switch (columnIndex) {
-      case 0:
-        return "Key";
-      case 1:
-        return "Value";
-      default:
-        return null;
-      }
-    }
+		public int getColumnCount() {
+			return 2;
+		}
 
-    public Class getColumnClass(int columnIndex) {
-      return java.lang.String.class;
-    }
+		public String getColumnName(int columnIndex) {
+			switch (columnIndex) {
+			case 0:
+				return "Key";
+			case 1:
+				return "Value";
+			default:
+				return null;
+			}
+		}
 
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-      switch (columnIndex) {
-      case 0:
-        return false;
-      case 1:
-        return true;
-      default:
-        return false;
-      }
-    }
+		public Class getColumnClass(int columnIndex) {
+			return java.lang.String.class;
+		}
 
-    public Object getValueAt(int rowIndex, int columnIndex) {
-      switch (columnIndex) {
-      case 0:
-        return m_keys[rowIndex].toString();
-      case 1:
-        return m_properties.getProperty(m_keys[rowIndex].toString());
-      default:
-        return "";
-      }
-    }
+		public boolean isCellEditable(int rowIndex, int columnIndex) {
+			switch (columnIndex) {
+			case 0:
+				return false;
+			case 1:
+				return true;
+			default:
+				return false;
+			}
+		}
 
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-      switch (columnIndex) {
-      case 0:
-        break;
-      case 1:
-        m_properties.setProperty(m_keys[rowIndex].toString(), aValue.toString());
-        break;
-      }
-    }
-  }
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			switch (columnIndex) {
+			case 0:
+				return m_keys[rowIndex].toString();
+			case 1:
+				return m_properties.getProperty(m_keys[rowIndex].toString());
+			default:
+				return "";
+			}
+		}
 
-  public PropertySheet(Frame parent, Properties p) {
-    super();
-    m_properties = p;
-    m_keys = p.keySet().toArray();
-    setLayout(new BorderLayout());
-    add(new JScrollPane(new JTable(new PairTableModel())), BorderLayout.CENTER);
-  }
+		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+			switch (columnIndex) {
+			case 0:
+				break;
+			case 1:
+				m_properties.setProperty(m_keys[rowIndex].toString(), aValue.toString());
+				break;
+			}
+		}
+	}
 
-  public final Properties getProperties() {
-    return m_properties;
-  }
+	public PropertySheet(Frame parent, Properties p) {
+		super();
+		m_properties = p;
+		m_keys = p.keySet().toArray();
+		setLayout(new BorderLayout());
+		add(new JScrollPane(new JTable(new PairTableModel())), BorderLayout.CENTER);
+	}
+
+	public final Properties getProperties() {
+		return m_properties;
+	}
 }
