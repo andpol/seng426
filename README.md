@@ -1,3 +1,7 @@
 ###SENG 426 - Software Quality Engineering###
 
-TODO
+Team Members:
+ - Jared Griffis
+ - Derek Binnersly
+ - Jordan Smythe
+ - Andrey Polyakov
