@@ -930,11 +930,11 @@ public class JWP extends JFrame implements ActionListener {
 
 		setIconImage(Loader.load("jmonkey16.gif"));
 
-		try {
-			UIManager.setLookAndFeel(reg.getString("MAIN", "main.look&feel"));
-		} catch (Exception e) {
-			System.out.println("Unknown Look & Feel. Using Defaults.");
-		}
+//		try {
+//			UIManager.setLookAndFeel(reg.getString("MAIN", "main.look&feel"));
+//		} catch (Exception e) {
+//			System.out.println("Unknown Look & Feel. Using Defaults.");
+//		}
 
 		dt = new MainDesktop();
 		dt.setBorder(BorderFactory.createLoweredBevelBorder());

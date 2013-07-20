@@ -145,6 +145,14 @@ public class RegistryGroup extends Properties {
 				break;
 			case Registry.TYPE_STRING_SINGLE:
 				break;
+			case Registry.TYPE_OBJECT_SINGLE:
+			case Registry.TYPE_OBJECT_ARRAY:
+			case Registry.TYPE_INT_ARRAY:
+			case Registry.TYPE_BYTE_ARRAY:
+			case Registry.TYPE_CHAR_ARRAY:
+			case Registry.TYPE_STRING_ARRAY:
+				// TODO XXX
+				break;
 			default:
 				String msg = "a property of type " + Registry.typeToJavaType(type)
 						+ " cannot be set";

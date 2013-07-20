@@ -805,4 +805,30 @@ final class RegistryImpl extends Registry implements Serializable {
 			loadData();
 		}
 	}
+	
+	public static void main(String args[]) {
+		RegistryImpl r = new RegistryImpl(FILE_SYNTAX_VERSION);
+		
+		r.setFile(new File("/home/jgriffis/Desktop/registry.test"));
+		
+		r.setProperty(RegistryImplTest.DEFAULT_GROUP_NAME, RegistryImplTest.STRING_KEY, RegistryImplTest.STRING_VALUE);
+		r.setProperty(RegistryImplTest.DEFAULT_GROUP_NAME, RegistryImplTest.STRING_ARRAY_KEY, RegistryImplTest.STRING_ARRAY_VALUE);
+		r.setProperty(RegistryImplTest.DEFAULT_GROUP_NAME, RegistryImplTest.BOOLEAN_KEY, RegistryImplTest.BOOLEAN_VALUE);
+		r.setProperty(RegistryImplTest.DEFAULT_GROUP_NAME, RegistryImplTest.INTEGER_KEY, RegistryImplTest.INT_VALUE);
+		r.setProperty(RegistryImplTest.DEFAULT_GROUP_NAME, RegistryImplTest.INT_ARRAY_KEY, RegistryImplTest.INT_ARRAY_VALUE);
+		r.setProperty(RegistryImplTest.DEFAULT_GROUP_NAME, RegistryImplTest.LONG_KEY, RegistryImplTest.LONG_VALUE);
+		r.setProperty(RegistryImplTest.DEFAULT_GROUP_NAME, RegistryImplTest.BYTE_KEY, RegistryImplTest.BYTE_VALUE);
+		r.setProperty(RegistryImplTest.DEFAULT_GROUP_NAME, RegistryImplTest.BYTE_ARRAY_KEY, RegistryImplTest.BYTE_ARRAY_VALUE);
+		r.setProperty(RegistryImplTest.DEFAULT_GROUP_NAME, RegistryImplTest.CHAR_KEY, RegistryImplTest.CHAR_VALUE);
+		r.setProperty(RegistryImplTest.DEFAULT_GROUP_NAME, RegistryImplTest.CHAR_ARRAY_KEY, RegistryImplTest.CHAR_ARRAY_VALUE);
+		r.setProperty(RegistryImplTest.DEFAULT_GROUP_NAME, RegistryImplTest.DOUBLE_KEY, RegistryImplTest.DOUBLE_VALUE);
+		r.setProperty(RegistryImplTest.DEFAULT_GROUP_NAME, RegistryImplTest.FLOAT_KEY, RegistryImplTest.FLOAT_VALUE);
+		r.setProperty(RegistryImplTest.DEFAULT_GROUP_NAME, RegistryImplTest.SHORT_KEY, RegistryImplTest.SHORT_VALUE);
+		
+		try {
+			r.commit();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
