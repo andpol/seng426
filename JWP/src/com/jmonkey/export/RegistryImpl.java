@@ -184,7 +184,7 @@ final class RegistryImpl extends Registry implements Serializable {
 			if (line == null || !line.startsWith(SIGNATURE)) {
 				throw new RegistryFormatException("not a jmonkey registry file");
 			}
-
+			
 			int[] v = stringToVersion(line.substring(SIGNATURE.length()));
 			if (v == null) {
 				String msg = "jmonkey registry format not specified";
@@ -458,7 +458,7 @@ final class RegistryImpl extends Registry implements Serializable {
 		if (!m_groups.containsKey(group)) {
 			return Registry.TYPE_NONE;
 		}
-
+		
 		String value = ((RegistryGroup) m_groups.get(group)).getProperty(key);
 		if (value == null) {
 			return Registry.TYPE_NONE;
