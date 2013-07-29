@@ -2,6 +2,7 @@ package com.jmonkey.export;
 
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -164,7 +165,7 @@ public class RegistryGroup extends Properties {
 		}
 	}
 
-	public synchronized boolean contains(Object value) {
+	public boolean contains(Object value) {
 		throw new UnsupportedOperationException("contains(Object)");
 	}
 
@@ -172,19 +173,15 @@ public class RegistryGroup extends Properties {
 		throw new UnsupportedOperationException("containsValue(Object)");
 	}
 
-	public synchronized Enumeration elements() {
-		// TODO Auto-generated method stub
+	public synchronized Enumeration<Object> elements() {
 		return super.elements();
 	}
 
-	public Set entrySet() {
-		// TODO Auto-generated method stub
+	public Set<Map.Entry<Object, Object>> entrySet() {
 		return super.entrySet();
 	}
 
-	public Collection values() {
-		// TODO Auto-generated method stub
+	public Collection<Object> values() {
 		return super.values();
 	}
-
 }

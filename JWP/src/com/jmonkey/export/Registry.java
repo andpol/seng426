@@ -29,7 +29,7 @@ public abstract class Registry {
 	public static final int TYPE_FLOAT_SINGLE = 15; // float
 	public static final int TYPE_CORRUPT = 16; // float
 
-	public static String typeToJavaType(int type) throws RegistryException {
+	public static String typeToJavaType(int type) {
 		switch (type) {
 		case Registry.TYPE_STRING_SINGLE:
 			return "String";
@@ -295,7 +295,7 @@ public abstract class Registry {
 	 * 
 	 * @return an Enumeration of Properties values.
 	 */
-	public abstract Enumeration getGroups();
+	public abstract Enumeration<String> getGroups();
 
 	/**
 	 * Gets an int value.
@@ -331,7 +331,7 @@ public abstract class Registry {
 	 *            the name of the group
 	 * @return an Enumeration of keys
 	 */
-	public abstract Enumeration getKeys(String group);
+	public abstract Enumeration<Object> getKeys(String group);
 
 	/**
 	 * Gets a long value.
@@ -527,7 +527,7 @@ public abstract class Registry {
 	 * @return boolean <code>true<code> if the Registry exists for this class, 
 	 * <code>false<code> otherwise.
 	 */
-	public static boolean hasRegistry(Class c) {
+	public static boolean hasRegistry(Class<?> c) {
 		return Registry.hasRegistry(c.getName(), false);
 	}
 
@@ -570,7 +570,7 @@ public abstract class Registry {
 	 * @throws IOException
 	 *             if the Registry file cannot be read or created.
 	 */
-	public static Registry loadForClass(Class requestingClass) throws IOException {
+	public static Registry loadForClass(Class<?> requestingClass) throws IOException {
 		return Registry.loadForName(requestingClass.getName(), null, false);
 	}
 
@@ -587,7 +587,7 @@ public abstract class Registry {
 	 * @throws IOException
 	 *             if the Registry file cannot be read or created.
 	 */
-	public static Registry loadForClass(Class requestingClass, int[] requestedVersion)
+	public static Registry loadForClass(Class<?> requestingClass, int[] requestedVersion)
 			throws IOException {
 		return Registry.loadForName(requestingClass.getName(), requestedVersion, false);
 	}

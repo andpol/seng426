@@ -55,7 +55,7 @@ final class RegistryImpl extends Registry implements Serializable {
 	private static final String ID_FLT = "FL@"; // float
 
 	private boolean m_altered = false;
-	private Hashtable m_groups = new Hashtable();
+	private Hashtable<String, Object> m_groups = new Hashtable<String, Object>();
 	private File m_dataFile = null;
 	private int[] m_registryVersion = null;
 
@@ -118,12 +118,12 @@ final class RegistryImpl extends Registry implements Serializable {
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("Registry dump: ").append(new Date()).append(NL);
-		Enumeration ge = m_groups.keys();
+		Enumeration<String> ge = m_groups.keys();
 		while (ge.hasMoreElements()) {
-			String key = (String) ge.nextElement();
+			String key = ge.nextElement();
 			sb.append(key).append(NL);
 			RegistryGroup temp = (RegistryGroup) m_groups.get(key);
-			Enumeration pe = temp.keys();
+			Enumeration<Object> pe = temp.keys();
 			while (pe.hasMoreElements()) {
 				String pkey = (String) pe.nextElement();
 				sb.append("\t").append(pkey).append("=");
@@ -133,7 +133,7 @@ final class RegistryImpl extends Registry implements Serializable {
 		return sb.toString();
 	}
 
-	public void read(Reader reader) throws IOException {
+	public void read(Reader reader) {
 		BufferedReader br = new BufferedReader(reader);
 		String currentGroup = null;
 		StringBuffer sb = new StringBuffer();
@@ -148,8 +148,12 @@ final class RegistryImpl extends Registry implements Serializable {
 			if (line == null || !line.startsWith(SIGNATURE)) {
 				throw new RegistryFormatException("not a jmonkey registry file");
 			}
+			
 			int[] v = stringToVersion(line.substring(SIGNATURE.length()));
-			if (v[0] != FILE_SYNTAX_VERSION[0]) {
+			if (v == null) {
+				String msg = "jmonkey registry format not specified";
+				throw new RegistryFormatException(msg);
+			} else if (v[0] != FILE_SYNTAX_VERSION[0]) {
 				String msg = "jmonkey registry format v" + v[0] + ".x not supported";
 				throw new RegistryFormatException(msg);
 			}
@@ -200,9 +204,9 @@ final class RegistryImpl extends Registry implements Serializable {
 		try {
 			writer.write(SIGNATURE + versionToString(FILE_SYNTAX_VERSION) + NL);
 			writer.write(SCHEMA + versionToString(m_registryVersion) + NL);
-			Enumeration groups = m_groups.keys();
+			Enumeration<String> groups = m_groups.keys();
 			while (groups.hasMoreElements()) {
-				String group = (String) groups.nextElement();
+				String group = groups.nextElement();
 				String writeSec = "[" + group + "]" + NL;
 				writer.write(writeSec);
 				RegistryGroup temp = (RegistryGroup) m_groups.get(group);
@@ -254,7 +258,7 @@ final class RegistryImpl extends Registry implements Serializable {
 		}
 	}
 
-	private void checkVersion(int[] requiredVersion) throws IOException {
+	private void checkVersion(int[] requiredVersion) throws RegistryFormatException {
 		if (m_registryVersion == null) {
 			m_registryVersion = requiredVersion;
 		} else if (requiredVersion != null) {
@@ -359,6 +363,10 @@ final class RegistryImpl extends Registry implements Serializable {
 	 * @return the property's type.
 	 */
 	public int getType(String group, String key) {
+		if (!m_groups.containsKey(group)) {
+			return Registry.TYPE_NONE;
+		}
+		
 		String value = ((RegistryGroup) m_groups.get(group)).getProperty(key);
 		if (value == null) {
 			return Registry.TYPE_NONE;
@@ -469,7 +477,7 @@ final class RegistryImpl extends Registry implements Serializable {
 
 	private Object decode(String in) throws RegistryException {
 		StringTokenizer stok = new StringTokenizer(in, "|");
-		ArrayList list = new ArrayList();
+		ArrayList<String> list = new ArrayList<String>();
 		while (stok.hasMoreTokens()) {
 			list.add(stok.nextToken());
 		}
@@ -518,7 +526,7 @@ final class RegistryImpl extends Registry implements Serializable {
 	}
 
 	public int getInteger(String group, String key) {
-		String res = getBasicProperty(group, key, TYPE_INT_SINGLE);
+		String res = getBasicProperty(group, key, TYPE_INT_SINGLE).trim();
 		try {
 			return Integer.parseInt(res);
 		} catch (NumberFormatException ex) {
@@ -684,12 +692,24 @@ final class RegistryImpl extends Registry implements Serializable {
 		return m_groups.containsKey(group);
 	}
 
-	public Enumeration getGroups() {
+	public Enumeration<String> getGroups() {
 		return m_groups.keys();
 	}
 
-	public Enumeration getKeys(String group) {
-		ensureGroup(group);
+	public Enumeration<Object> getKeys(String group) {
+		if (!m_groups.containsKey(group)) {
+			return new Enumeration<Object>() {
+				@Override
+				public boolean hasMoreElements() {
+					return false;
+				}
+
+				@Override
+				public Object nextElement() {
+					return null;
+				}
+			};
+		}
 		return ((RegistryGroup) m_groups.get(group)).keys();
 	}
 
@@ -741,9 +761,9 @@ final class RegistryImpl extends Registry implements Serializable {
 		}
 	}
 
-	public void importGroup(String group, RegistryGroup RegistryGroup) {
+	public void importGroup(String group, RegistryGroup registryGroup) {
 		if (!isGroup(group)) {
-			RegistryGroup rg = (RegistryGroup) RegistryGroup.clone();
+			RegistryGroup rg = (RegistryGroup) registryGroup.clone();
 			m_groups.put(group, rg);
 			m_altered = true;
 		}

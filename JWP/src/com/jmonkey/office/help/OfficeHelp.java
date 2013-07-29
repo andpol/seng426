@@ -1,8 +1,6 @@
 package com.jmonkey.office.help;
 
 import java.awt.BorderLayout;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -10,26 +8,19 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import com.jmonkey.office.jwp.support.Code;
-
 import com.jmonkey.office.jwp.support.images.Loader;
 
 public class OfficeHelp extends JFrame {
-	// static URL backURL = null;
-	// static URL forURL = null;
-	// htmlFrame hFrame;
-	private String start_loc = null;
+	private String startLoc = null;
 
-	// protected Browser iceBrowser;
-	private Class iceClass;
-
+	private Class<?> iceClass;
 	private JComponent iceBrowser;
 
 	public OfficeHelp(String helpFile) {
 		super("Program Help");
 		setIconImage(Loader.load("help_book16.gif"));
 		getContentPane().setLayout(new BorderLayout());
-		start_loc = "http://www.jmonkey.com/~mschmidt/help/" + helpFile + "/index.html";
+		startLoc = "http://www.jmonkey.com/~mschmidt/help/" + helpFile + "/index.html";
 
 		try {
 			iceClass = Class.forName("ice.iblite.Browser");
@@ -38,15 +29,13 @@ public class OfficeHelp extends JFrame {
 			JOptionPane.showMessageDialog(null, "Can't find class ice.iblite.Browser\n"
 					+ " put icebrowserlist.jar in your CLASSPATH",
 					"Can't find class ice.iblite.Browser", JOptionPane.WARNING_MESSAGE);
+			return;
 		}
 
 		this.getContentPane().add("Center", iceBrowser);
 
-		Object[] args = { start_loc };
+		Object[] args = { startLoc };
 		iceMethodCall("gotoLocation", args);
-
-		// iceBrowser.gotoLocation(start_loc);
-
 	}
 
 	/**
@@ -56,7 +45,7 @@ public class OfficeHelp extends JFrame {
 	 */
 	private Object iceMethodCall(String methodName, Object[] args) {
 		// Figure the Class of each element of args[]:
-		Class[] parameterTypes = new Class[args.length];
+		Class<?>[] parameterTypes = new Class[args.length];
 		for (int i = 0; i < args.length; i++) {
 			parameterTypes[i] = args[i].getClass();
 		}
@@ -74,16 +63,5 @@ public class OfficeHelp extends JFrame {
 					"Warning", JOptionPane.WARNING_MESSAGE);
 		}
 		return null;
-	}
-
-	private void redirectOutput() {
-		try {
-			FileOutputStream fileOut = new FileOutputStream("Output.txt", true);
-			PrintStream thePrintStream = new PrintStream(fileOut);
-			System.setOut(thePrintStream);
-			System.setErr(thePrintStream);
-		} catch (java.io.IOException ex) {
-			Code.failed(ex);
-		}
 	}
 }
