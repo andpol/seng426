@@ -1,0 +1,13 @@
+# JMonkey Registry v1.1
+# Schema 1.1
+[group1]
+#registry.test
+#Sat Jul 27 15:08:07 PDT 2013
+testShort=SH@abc
+testFloat=FL@abc
+testInt=IN@abc
+testBoolean=BO@abc
+testByte=BY@abc
+testDouble=DO@abc
+testChar=CH@abc
+testLong=LO@abc

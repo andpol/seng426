@@ -151,7 +151,7 @@ public class RegistryGroup extends Properties {
 			case Registry.TYPE_BYTE_ARRAY:
 			case Registry.TYPE_CHAR_ARRAY:
 			case Registry.TYPE_STRING_ARRAY:
-				// TODO XXX
+				// TODO
 				break;
 			default:
 				String msg = "a property of type " + Registry.typeToJavaType(type)

@@ -1,0 +1,7 @@
+# JMonkey Registry v1.1
+# Schema 1.1
+[group1]
+#registry.test
+#Sat Jul 27 15:08:07 PDT 2013
+testInt=IN@1
+testString=ST@testValue
