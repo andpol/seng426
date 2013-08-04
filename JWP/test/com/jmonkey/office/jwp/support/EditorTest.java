@@ -1,6 +1,10 @@
 package com.jmonkey.office.jwp.support;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,7 +13,6 @@ import java.util.Enumeration;
 import javax.swing.JEditorPane;
 import javax.swing.text.Element;
 import javax.swing.text.MutableAttributeSet;
-import javax.swing.text.SimpleAttributeSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +37,6 @@ public class EditorTest {
 
 	@Test
 	public void testEditorActivate() {
-
 		assertNotSame(EditorActionManager.getActiveEditor(), mockEditor);
 		mockEditor.activate();
 		assertSame(EditorActionManager.getActiveEditor(), mockEditor);
@@ -162,7 +164,7 @@ public class EditorTest {
 	public void testEditorGetSimpleAttributeSet() {
 		assertNotNull(mockEditor.getSimpleAttributeSet());
 	}
-	
+
 	@Test
 	public void testEditorGetUndoManager() {
 		assertNotNull(mockEditor.getUndoManager());
