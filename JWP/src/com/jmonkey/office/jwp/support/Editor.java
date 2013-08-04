@@ -27,9 +27,9 @@ import com.jmonkey.office.jwp.support.editors.TEXTEditor;
  * Base Editor class for all editors.
  */
 public abstract class Editor extends JPanel {
+	private static final long serialVersionUID = -8993800202531452275L;
 
-	public static final String[] VALID_CONTENT_TYPES = { "text/plain", "text/html", "text/rtf",
-			"application/x-lexi" };
+	public static final String[] VALID_CONTENT_TYPES = { "text/plain", "text/html", "text/rtf", "application/x-lexi" };
 
 	private static final int[] EDITOR_REGISTRY_VERSION = { 1, 0 };
 
@@ -140,15 +140,6 @@ public abstract class Editor extends JPanel {
 			}
 		}
 
-		// Is it a text file?
-		for (int i = 0; i < TEXTEditor.FILE_EXTENSIONS.length; i++) {
-			if (extension.equalsIgnoreCase(TEXTEditor.FILE_EXTENSIONS[i])) {
-				// this is redundant, but we'll include it for uniformity for
-				// now.
-				return new TEXTEditor(eam);
-			}
-		}
-
 		return new TEXTEditor(eam);
 	}
 
@@ -168,7 +159,7 @@ public abstract class Editor extends JPanel {
 	 */
 	public final JPopupMenu getPopup() {
 		JPopupMenu popUP = new JPopupMenu();
-		Enumeration e = getRegistry().getKeys("POPUP");
+		Enumeration<?> e = getRegistry().getKeys("POPUP");
 		while (e.hasMoreElements()) {
 			String key = (String) e.nextElement();
 			if (getRegistry().getBoolean("POPUP", key)) {
@@ -189,11 +180,9 @@ public abstract class Editor extends JPanel {
 			try {
 				m_optionRegistry = Registry.loadForClass(this.getClass(), EDITOR_REGISTRY_VERSION);
 				if (m_optionRegistry.sizeOf("POPUP") == 0) {
-					m_optionRegistry.initGroup("POPUP", new String[][] {
-							{ "Cut", "true", "boolean" }, { "Copy", "true", "boolean" },
-							{ "Paste", "true", "boolean" }, { "Undo", "true", "boolean" },
-							{ "Redo", "true", "boolean" }, { "SelectAll", "true", "boolean" },
-							{ "SelectNone", "true", "boolean" } });
+					m_optionRegistry.initGroup("POPUP", new String[][] { { "Cut", "true", "boolean" }, { "Copy", "true", "boolean" },
+							{ "Paste", "true", "boolean" }, { "Undo", "true", "boolean" }, { "Redo", "true", "boolean" }, { "Select All", "true", "boolean" },
+							{ "Select None", "true", "boolean" } });
 				}
 			} catch (java.io.IOException e) {
 				System.err.println(e.toString());
@@ -205,9 +194,10 @@ public abstract class Editor extends JPanel {
 
 	public final MutableAttributeSet getSimpleAttributeSet() {
 		return new SimpleAttributeSet() {
+			private static final long serialVersionUID = 1125845969891707657L;
+
 			public AttributeSet getResolveParent() {
-				return (getCurrentParagraph() != null) ? getCurrentParagraph().getAttributes()
-						: null;
+				return (getCurrentParagraph() != null) ? getCurrentParagraph().getAttributes() : null;
 			}
 
 			public Object clone() {

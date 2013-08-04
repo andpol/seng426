@@ -36,14 +36,14 @@ public class EditorTest {
 	}
 
 	@Test
-	public void testEditorActivate() {
+	public void testActivate() {
 		assertNotSame(EditorActionManager.getActiveEditor(), mockEditor);
 		mockEditor.activate();
 		assertSame(EditorActionManager.getActiveEditor(), mockEditor);
 	}
 
 	@Test
-	public void testEditorDeactivate() {
+	public void testDeactivate() {
 		mockEditor.activate();
 		assertSame(EditorActionManager.getActiveEditor(), mockEditor);
 		mockEditor.deactivate();
@@ -56,7 +56,7 @@ public class EditorTest {
 	}
 
 	@Test
-	public void testEditorCreateForContentType_TEXT() throws RegistryFormatException {
+	public void testCreateForContentType_TEXT() throws RegistryFormatException {
 		JWP jwp = new JWP(null);
 		Editor editor = Editor.createEditorForContentType("text/plain", jwp);
 		assertTrue(editor instanceof TEXTEditor);
@@ -65,21 +65,21 @@ public class EditorTest {
 	// **** Create for Content Type **** //
 
 	@Test
-	public void testEditorCreateForContentType_HTML() throws RegistryFormatException {
+	public void testCreateForContentType_HTML() throws RegistryFormatException {
 		JWP jwp = new JWP(null);
 		Editor editor = Editor.createEditorForContentType("text/html", jwp);
 		assertTrue(editor instanceof HTMLEditor);
 	}
 
 	@Test
-	public void testEditorCreateForContentType_RTF() throws RegistryFormatException {
+	public void testCreateForContentType_RTF() throws RegistryFormatException {
 		JWP jwp = new JWP(null);
 		Editor editor = Editor.createEditorForContentType("text/rtf", jwp);
 		assertTrue(editor instanceof RTFEditor);
 	}
 
 	@Test
-	public void testEditorCreateForContentType_UNKNOWN() throws RegistryFormatException {
+	public void testCreateForContentType_UNKNOWN() throws RegistryFormatException {
 		JWP jwp = new JWP(null);
 		Editor editor = Editor.createEditorForContentType("text/non-existant", jwp);
 		assertTrue(editor instanceof TEXTEditor);
@@ -87,54 +87,54 @@ public class EditorTest {
 
 	// **** Create for Extension **** //
 	@Test
-	public void testEditorCreateForExtension_TEXT1() throws RegistryFormatException {
+	public void testCreateForExtension_TEXT1() throws RegistryFormatException {
 		JWP jwp = new JWP(null);
 		Editor editor = Editor.createEditorForExtension("txt", jwp);
 		assertTrue(editor instanceof TEXTEditor);
 	}
 
 	@Test
-	public void testEditorCreateForExtension_TEXT2() throws RegistryFormatException {
+	public void testCreateForExtension_TEXT2() throws RegistryFormatException {
 		JWP jwp = new JWP(null);
 		Editor editor = Editor.createEditorForExtension("text", jwp);
 		assertTrue(editor instanceof TEXTEditor);
 	}
 
 	@Test
-	public void testEditorCreateForExtension_TEXT3() throws RegistryFormatException {
+	public void testCreateForExtension_TEXT3() throws RegistryFormatException {
 		JWP jwp = new JWP(null);
 		Editor editor = Editor.createEditorForExtension("blarg", jwp);
 		assertTrue(editor instanceof TEXTEditor);
 	}
 
 	@Test
-	public void testEditorCreateForExtension_HTML1() throws RegistryFormatException {
+	public void testCreateForExtension_HTML1() throws RegistryFormatException {
 		JWP jwp = new JWP(null);
 		Editor editor = Editor.createEditorForExtension("html", jwp);
 		assertTrue(editor instanceof HTMLEditor);
 	}
 
 	@Test
-	public void testEditorCreateForExtension_HTML2() throws RegistryFormatException {
+	public void testCreateForExtension_HTML2() throws RegistryFormatException {
 		JWP jwp = new JWP(null);
 		Editor editor = Editor.createEditorForExtension("htm", jwp);
 		assertTrue(editor instanceof HTMLEditor);
 	}
 
 	@Test
-	public void testEditorCreateForExtension_RTF() throws RegistryFormatException {
+	public void testCreateForExtension_RTF() throws RegistryFormatException {
 		JWP jwp = new JWP(null);
 		Editor editor = Editor.createEditorForExtension("rtf", jwp);
 		assertTrue(editor instanceof RTFEditor);
 	}
 
 	@Test
-	public void testEditorGetFile_NULL() {
+	public void testGetFile_NULL() {
 		assertNull(mockEditor.getFile());
 	}
 
 	@Test
-	public void testEditorGetSetFile() {
+	public void testGetSetFile() {
 		File f = new File("");
 		assertNull(mockEditor.getFile());
 		mockEditor.setFile(f);
@@ -143,12 +143,12 @@ public class EditorTest {
 	}
 
 	@Test
-	public void testEditorGetPopup() {
+	public void testGetPopup() {
 		assertNotNull(mockEditor.getPopup());
 	}
 
 	@Test
-	public void testEditorGetRegistry() {
+	public void testGetRegistry() {
 		Registry registry = mockEditor.getRegistry();
 		// / Init the registry
 		assertNotNull(registry);
@@ -161,12 +161,12 @@ public class EditorTest {
 	}
 
 	@Test
-	public void testEditorGetSimpleAttributeSet() {
+	public void testGetSimpleAttributeSet() {
 		assertNotNull(mockEditor.getSimpleAttributeSet());
 	}
 
 	@Test
-	public void testEditorGetUndoManager() {
+	public void testGetUndoManager() {
 		assertNotNull(mockEditor.getUndoManager());
 	}
 
