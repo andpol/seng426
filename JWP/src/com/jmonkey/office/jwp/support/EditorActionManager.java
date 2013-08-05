@@ -1090,11 +1090,12 @@ public class EditorActionManager extends ActionManager {
 	 */
 	protected final void setParagraphAttributes(JEditorPane editor, AttributeSet attr,
 			boolean replace) {
-		int p = editor.getSelectionStart();
+		int start = editor.getSelectionStart();
+		int end = editor.getSelectionEnd();
 		Editor active = EditorActionManager.getActiveEditor();
 		Document doc = active.getTextComponent().getDocument();
 		if (doc instanceof StyledDocument) {
-			((StyledDocument) doc).setParagraphAttributes(p, p, attr, replace);
+			((StyledDocument) doc).setParagraphAttributes(start, end - start + 1, attr, replace);
 		}
 		editor.requestFocus();
 	}
