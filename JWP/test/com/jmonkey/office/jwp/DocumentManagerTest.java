@@ -57,38 +57,31 @@ public class DocumentManagerTest {
 		manager.editorOpen();
 	}
 
-	/*  Opens a file chooser don't know how that works with JUnit
 	@Test
 	public void testEditorOpenAs() {
 		manager.editorOpenAs();
 	}
-	*/
 
 	@Test
 	public void testEditorRevert() {
 		manager.editorRevert(ed);
 	}
 
-	/* Uses a file Chooser window?
+
 	@Test
 	public void testEditorSave() {
 		manager.editorSave(ed);
 	}
-	*/
 
-	/* Uses a file Chooser window?
 	@Test
 	public void testEditorSaveAs() {
 		manager.editorSaveAs(ed);
 	}
-	*/
 
-	/* Uses a file Chooser window?
 	@Test
 	public void testEditorCopy() {
-		manager.editorCopy(ed);
+		manager.editorSaveCopy(ed);
 	}
-	*/
 
 	@Test
 	public void testCreateDocumentFrame1() {
@@ -110,17 +103,17 @@ public class DocumentManagerTest {
 
 
 	@Test
-		public void testCreateDocumentFrame3() {
-			DocumentFrame df = manager.createDocumentFrame("text/plain");
+	public void testCreateDocumentFrame3() {
+		DocumentFrame df = manager.createDocumentFrame("text/plain");
 
-			assertFalse(df == null);
+		assertFalse(df == null);
 	}
 
 	@Test
-		public void testCreateDocumentFrame4() {
-			DocumentFrame df = manager.createDocumentFrame();
+	public void testCreateDocumentFrame4() {
+		DocumentFrame df = manager.createDocumentFrame();
 
-			assertFalse(df == null);
+		assertFalse(df == null);
 	}
 
 
@@ -159,19 +152,15 @@ public class DocumentManagerTest {
 		manager.switchedDocument(doc, false);
 	}
 
-	/* This is a visual thing so I can only see if it runs
 	@Test
 	public void testCascade() {
 		manager.cascade(doc);
 	}
-	*/
 
-	/* This is a visual thing so I can only see if it runs
 	@Test
 	public void testCascadeAll() {
 		manager.cascadeAll();
 	}
-	*/
 
 	@Test
 	public void testCloseActiveDocument() {
@@ -214,7 +203,7 @@ public class DocumentManagerTest {
 		Object inner = null;
 		Class<?> innerClasses[] = object.getClass().getDeclaredClasses();
 		for (Class<?> c : innerClasses) {
-			if ("PairTableModel".equals(c.getSimpleName())) {
+			if (innerClassName.equals(c.getSimpleName())) {
 				Constructor<?> constructor = c.getDeclaredConstructors()[0];
 				constructor.setAccessible(true);
 
