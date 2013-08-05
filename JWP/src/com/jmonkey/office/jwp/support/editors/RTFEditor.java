@@ -6,6 +6,8 @@ import com.jmonkey.office.jwp.support.EditorActionManager;
  * This class is the Lexi document editor for Rich Text (RTF) documents.
  */
 public final class RTFEditor extends StyledEditor {
+	private static final long serialVersionUID = -5332137491506456678L;
+
 	/**
 	 * The Content type of the editor.
 	 */
@@ -23,6 +25,7 @@ public final class RTFEditor extends StyledEditor {
 		super(eam);
 	}
 
+	@Override
 	public final String[] getFileExtensions() {
 		return FILE_EXTENSIONS;
 	}
