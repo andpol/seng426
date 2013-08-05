@@ -47,6 +47,7 @@ import com.jmonkey.office.jwp.support.EditorActionManager;
  * and RTF.
  */
 public abstract class StyledEditor extends Editor implements MouseListener, KeyListener {
+	private static final long serialVersionUID = -1421309143927582221L;
 
 	private JTextPane m_editor = null;
 	private boolean m_changed = false;
@@ -61,7 +62,7 @@ public abstract class StyledEditor extends Editor implements MouseListener, KeyL
 	/**
 	 * Document Event manager
 	 */
-	protected final class EventListener extends Object implements DocumentListener, UndoableEditListener, HyperlinkListener, FocusListener,
+	protected final static class EventListener extends Object implements DocumentListener, UndoableEditListener, HyperlinkListener, FocusListener,
 			VetoableChangeListener, ChangeListener {
 		private StyledEditor m_parent = null;
 
