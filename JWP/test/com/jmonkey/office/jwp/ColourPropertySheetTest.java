@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 import java.util.Properties;
 
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -27,6 +28,7 @@ public class ColourPropertySheetTest {
 	public static void setupClass() throws RegistryFormatException {
 		jwp = new JWP(null);
 		properties = new Properties();
+		properties.setProperty("red", "#FF0000");
 	}
 
 	@Before
@@ -39,25 +41,57 @@ public class ColourPropertySheetTest {
 		assertSame(jwp, invokePrivateMethod(cps, "getMain"));
 		assertSame(properties, invokePrivateMethod(cps, "getProperties"));
 	}
-
+	
 	@Test
 	public void testModelIsCellEditable() throws RegistryFormatException {
 		AbstractTableModel model = (AbstractTableModel) instantiatePrivateClass(cps, "PairTableModel");
-		
+
 		assertFalse(model.isCellEditable(0, 0));
 		assertTrue(model.isCellEditable(0, 1));
 		assertFalse(model.isCellEditable(0, 2));
 	}
-	
+
 	@Test
 	public void testModelGetColumnClass() throws RegistryFormatException {
 		AbstractTableModel model = (AbstractTableModel) instantiatePrivateClass(cps, "PairTableModel");
-		
+
 		assertEquals(String.class, model.getColumnClass(0));
 		assertEquals(String.class, model.getColumnClass(1));
 		assertEquals(String.class, model.getColumnClass(2));
 	}
 	
+	@Test
+	public void testModelGetColumnName() throws RegistryFormatException {
+		AbstractTableModel model = (AbstractTableModel) instantiatePrivateClass(cps, "PairTableModel");
+
+		assertEquals("Colour Name", model.getColumnName(0));
+		assertEquals("RGB Hex", model.getColumnName(1));
+		assertEquals(null, model.getColumnName(2));
+	}
+	
+	@Test
+	public void testModelGetValueAt() throws RegistryFormatException {
+		AbstractTableModel model = (AbstractTableModel) instantiatePrivateClass(cps, "PairTableModel");
+
+		assertEquals("red", model.getValueAt(0, 0));
+		assertEquals("#FF0000", model.getValueAt(0, 1));
+		assertEquals("", model.getValueAt(0, 2));
+	}
+	
+	@Test
+	public void testModelSetValueAt() throws RegistryFormatException {
+		AbstractTableModel model = (AbstractTableModel) instantiatePrivateClass(cps, "PairTableModel");
+
+		assertEquals("red", model.getValueAt(0, 0));
+		assertEquals("#FF0000", model.getValueAt(0, 1));
+		
+		model.setValueAt("blue", 0, 0);
+		model.setValueAt("#0000FF", 0, 1);
+		
+		assertEquals("red", model.getValueAt(0, 0));
+		assertEquals("#0000FF", model.getValueAt(0, 1));
+	}
+
 	/**
 	 * Invoke a private method with no arguments.
 	 * 
@@ -96,15 +130,15 @@ public class ColourPropertySheetTest {
 		Object inner = null;
 		Class<?> innerClasses[] = object.getClass().getDeclaredClasses();
 		for (Class<?> c : innerClasses) {
-			if ("PairTableModel".equals(c.getSimpleName())) {
+			if (innerClassName.equals(c.getSimpleName())) {
 				Constructor<?> constructor = c.getDeclaredConstructors()[0];
 				constructor.setAccessible(true);
 
 				try {
-					inner = constructor.newInstance(new Object[] { cps });
+					System.out.println(object);
+					inner = constructor.newInstance(new Object[] { object });
 				} catch (Exception e) {
-					throw new RuntimeException("Could not instantiate inner class '"
-							+ innerClassName + "'", e);
+					throw new RuntimeException("Could not instantiate inner class '" + innerClassName + "'", e);
 				}
 
 				return inner;
