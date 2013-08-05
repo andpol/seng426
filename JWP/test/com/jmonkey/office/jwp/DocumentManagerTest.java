@@ -209,7 +209,10 @@ public class DocumentManagerTest {
             fail("");
         }
         
-		DocumentFrame df = manager.active();
+        DocumentFrame df = manager.getOpenDocument("open.txt [text/plain]");
+        assertEquals("open.txt [text/plain]", df.getTitle());
+        
+		df = manager.active();
 		Editor ed = df.getEditor();
 		
 		manager.editorRevert(ed);
@@ -235,6 +238,9 @@ public class DocumentManagerTest {
         } catch (InterruptedException e) {
             fail("");
         }
+        
+        DocumentFrame df = this.manager.getOpenDocument("openAs.txt [text/plain]");
+        assertEquals("openAs.txt [text/plain]", df.getTitle());
          
         testFile.delete();
         //this.manager.closeAllDocuments();
@@ -252,8 +258,8 @@ public class DocumentManagerTest {
 		DocumentFrame df = manager.active();
 		
 		String[] contents = {"banana", "apple"};
-        this.createFile("dmtests/saveAs.txt", contents);
-        File testFile = new File("dmtests/saveAs.txt");
+        this.createFile("dmtests/save.txt", contents);
+        File testFile = new File("dmtests/save.txt");
         assertTrue(testFile.exists());
         try {
             saveChooser oc = new saveChooser(this.manager, df.getEditor()); 
@@ -265,7 +271,7 @@ public class DocumentManagerTest {
         } catch (InterruptedException e) {
             fail("");
         }
-         
+        
         testFile.delete();
         //this.manager.closeAllDocuments();
         System.gc();
@@ -348,11 +354,12 @@ public class DocumentManagerTest {
 	public void testOpenDocumentList() {
 		String[] list = manager.openDocumentList();
 	}
-
+	/*
 	@Test
 	public void testGetOpenDocument() {
 		DocumentFrame df = manager.getOpenDocument("New Document1 [text/rtf]");
 	}
+	*/
 
 	@Test
 	public void testActiveFrame() {

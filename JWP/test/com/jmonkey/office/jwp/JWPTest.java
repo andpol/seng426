@@ -18,6 +18,7 @@ import javax.swing.JToolBar;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.jmonkey.export.Registry;
 import com.jmonkey.export.RegistryFormatException;
 import com.jmonkey.office.jwp.JWP.MainDesktop;
 import com.jmonkey.office.jwp.support.EditorActionManager;
@@ -57,7 +58,9 @@ public class JWPTest {
 	
 	@Test
 	public void testGetRegistry() {
-		jwp.getRegistry();
+		Registry reg = jwp.getRegistry();
+		
+		assertTrue(reg != null);
 	}
 
 	@Test
