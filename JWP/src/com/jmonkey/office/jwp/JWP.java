@@ -398,7 +398,8 @@ public class JWP extends JFrame implements ActionListener {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			Code.message("colourPropertyAction - not implemented");
+			ColourPropertySheet colourProperties = new ColourPropertySheet(getMain(), getRegistry().referenceGroup("COLOURS"), true);
+			colourProperties.setVisible(true);
 			getMain().repaint();
 		}
 	}
@@ -409,7 +410,8 @@ public class JWP extends JFrame implements ActionListener {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			Code.message("fontPropertyAction - not implemented");
+			FontPropertySheet fontProperties = new FontPropertySheet(getMain(), getRegistry().referenceGroup("FONTS"), true);
+			fontProperties.setVisible(true);
 			getMain().repaint();
 		}
 	}
