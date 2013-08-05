@@ -1,5 +1,6 @@
 package com.jmonkey.office.jwp;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -71,8 +72,9 @@ public class JWPTest {
 
 	@Test
 	public void testScrollingUnitIncrement() {
-		int hori, vert;
-		Rectangle rect = new Rectangle(10, 10, 0, 0);
+		int hori;
+		int vert;
+		Rectangle rect = new Rectangle(10, 10, 10, 10);
 
 		hori = ((MainDesktop) instantiatePrivateClass(jwp, "MainDesktop")).getScrollableUnitIncrement(rect, HORIZONTAL, 0);
 		vert = ((MainDesktop) instantiatePrivateClass(jwp, "MainDesktop")).getScrollableUnitIncrement(rect, VERTICAL, 0);
@@ -84,23 +86,23 @@ public class JWPTest {
 	@Test
 	public void testScrollingBlockIncrement() {
 		int height, width;
-		Rectangle rect = new Rectangle(10, 10, 0, 0);
+		Rectangle rect = new Rectangle(10, 10, 10, 10);
 
 		width = ((MainDesktop) instantiatePrivateClass(jwp, "MainDesktop")).getScrollableBlockIncrement(rect, HORIZONTAL, 0);
 		height = ((MainDesktop) instantiatePrivateClass(jwp, "MainDesktop")).getScrollableBlockIncrement(rect, VERTICAL, 0);
 
-		assertTrue(width == 10);
 		assertTrue(height == 10);
+		assertTrue(width == 10);
 	}
 
 	@Test
 	public void testScrollableTrackingWidth() {
-		((MainDesktop) instantiatePrivateClass(jwp, "MainDesktop")).getScrollableTracksViewportWidth();
+		assertFalse(((MainDesktop) instantiatePrivateClass(jwp, "MainDesktop")).getScrollableTracksViewportWidth());
 	}
 
 	@Test
 	public void testScrollableTrackingHeight() {
-		((MainDesktop) instantiatePrivateClass(jwp, "MainDesktop")).getScrollableTracksViewportHeight();
+		assertFalse((MainDesktop) instantiatePrivateClass(jwp, "MainDesktop")).getScrollableTracksViewportHeight());
 	}
 
 
@@ -196,7 +198,7 @@ public class JWPTest {
 		Object inner = null;
 		Class<?> innerClasses[] = object.getClass().getDeclaredClasses();
 		for (Class<?> c : innerClasses) {
-			if ("PairTableModel".equals(c.getSimpleName())) {
+			if (innerClassName.equals(c.getSimpleName())) {
 				Constructor<?> constructor = c.getDeclaredConstructors()[0];
 				constructor.setAccessible(true);
 
