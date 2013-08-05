@@ -102,7 +102,7 @@ public class JWPTest {
 
 	@Test
 	public void testScrollableTrackingHeight() {
-		assertFalse((MainDesktop) instantiatePrivateClass(jwp, "MainDesktop")).getScrollableTracksViewportHeight());
+		assertFalse(((MainDesktop) instantiatePrivateClass(jwp, "MainDesktop")).getScrollableTracksViewportHeight());
 	}
 
 
