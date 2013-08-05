@@ -870,8 +870,8 @@ public class JWP extends JFrame implements ActionListener {
 											"String" } });
 				}
 
-				if (reg.sizeOf("OPTION") == 0) {
-					reg.initGroup("OPTION",
+				if (reg.sizeOf("POPUP") == 0) {
+					reg.initGroup("POPUP",
 							new String[][] { { "Cut", "true", "boolean" },
 									{ "Copy", "true", "boolean" }, { "Paste", "true", "boolean" },
 									{ "Undo", "true", "boolean" }, { "Redo", "true", "boolean" },
