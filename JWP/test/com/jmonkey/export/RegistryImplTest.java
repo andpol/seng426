@@ -788,6 +788,14 @@ public class RegistryImplTest {
 		assertEquals(1, registryImpl.size());
 		assertFalse(registryImpl.isAltered());
 	}
+	
+	@Test
+	public void testToString() {
+		String out = registryImpl.toString();
+		assertNotNull(out);
+		assertTrue(out.contains("Registry dump:"));
+		assertTrue(out.contains(STRING_VALUE));
+	}
 
 	private static class Foo implements Serializable {
 		int i;
