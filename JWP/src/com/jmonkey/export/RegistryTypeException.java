@@ -5,7 +5,8 @@ package com.jmonkey.export;
  * inconsistent.
  */
 public class RegistryTypeException extends RegistryPropertyException {
-
+	private static final long serialVersionUID = 4468522276550870221L;
+	
 	private int m_propertyType;
 	private int m_valueType;
 

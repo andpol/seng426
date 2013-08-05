@@ -11,11 +11,13 @@ import java.util.Set;
  * model.
  */
 public class RegistryGroup extends Properties {
+	private static final long serialVersionUID = -2640018592639480510L;
 
 	public RegistryGroup() {
 		super();
 	}
 
+	@Override
 	public String getProperty(String key) {
 		String typeAndValue = super.getProperty(key);
 		if (typeAndValue == null) {
@@ -27,11 +29,17 @@ public class RegistryGroup extends Properties {
 		}
 	}
 
+	@Override
 	public String getProperty(String key, String defaultValue) {
 		String res = getProperty(key);
 		return (res == null) ? defaultValue : res;
 	}
 
+	/**
+	 * Get the type of a property.
+	 * @param key the property key.
+	 * @return the registry type.
+	 */
 	public int getPropertyType(String key) {
 		String typeAndValue = super.getProperty(key);
 		if (typeAndValue.length() < 3) {
@@ -59,7 +67,7 @@ public class RegistryGroup extends Properties {
 	public synchronized Object setProperty(String key, String value) {
 		String typeAndValue = super.getProperty(key);
 		if (typeAndValue == null) {
-			return super.setProperty(key, RegistryImpl.ID_STR + value);
+			return super.setProperty(key, RegistryImpl.ID_DEFAULT + value);
 		} else {
 			if (typeAndValue.length() < 3) {
 				throw new RegistryException("malformed registry type/value");
@@ -111,6 +119,13 @@ public class RegistryGroup extends Properties {
 		}
 	}
 
+	/**
+	 * Verify that a property has the given type.
+	 * 
+	 * @param key
+	 * @param value
+	 * @param type
+	 */
 	private void checkValue(String key, String value, int type) {
 		try {
 			switch (type) {
@@ -165,22 +180,27 @@ public class RegistryGroup extends Properties {
 		}
 	}
 
+	@Override
 	public boolean contains(Object value) {
 		throw new UnsupportedOperationException("contains(Object)");
 	}
 
+	@Override
 	public boolean containsValue(Object value) {
 		throw new UnsupportedOperationException("containsValue(Object)");
 	}
 
+	@Override
 	public synchronized Enumeration<Object> elements() {
 		return super.elements();
 	}
 
+	@Override
 	public Set<Map.Entry<Object, Object>> entrySet() {
 		return super.entrySet();
 	}
 
+	@Override
 	public Collection<Object> values() {
 		return super.values();
 	}

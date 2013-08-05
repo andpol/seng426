@@ -25,6 +25,8 @@ import com.jmonkey.office.jwp.support.Code;
  * The default registry implementation.
  */
 final class RegistryImpl extends Registry implements Serializable {
+	private static final long serialVersionUID = 4172433854111572035L;
+
 	/**
 	 * The version number for the registry file syntax: index 0 is the major
 	 * number, 1 is the minor number.
@@ -38,7 +40,7 @@ final class RegistryImpl extends Registry implements Serializable {
 
 	static final String ENCODING = "ASCII";
 
-	static final String ID_STR = "ST@"; // String
+	private static final String ID_STR = "ST@"; // String
 	private static final String ID_STA = "SA@"; // String Array
 	private static final String ID_OBJ = "OB@"; // Object
 	private static final String ID_OBA = "OA@"; // Object Array
@@ -54,22 +56,50 @@ final class RegistryImpl extends Registry implements Serializable {
 	private static final String ID_DBL = "DO@"; // double
 	private static final String ID_FLT = "FL@"; // float
 
+	protected static final String ID_DEFAULT = ID_STR;
+
 	private boolean m_altered = false;
 	private Hashtable<String, Object> m_groups = new Hashtable<String, Object>();
 	private File m_dataFile = null;
 	private int[] m_registryVersion = null;
 
+	/**
+	 * Create an empty registry with a specified version number.
+	 * 
+	 * @param version
+	 *            version in the form { major, minor }
+	 */
 	protected RegistryImpl(int[] version) {
 		super();
 		m_registryVersion = version;
 	}
 
+	/**
+	 * Create a new registry instance by reading data in using an open reader.
+	 * 
+	 * @param reader
+	 *            an open reader used to import registry data.
+	 * @param requiredVersion
+	 *            the version that the imported data must match.
+	 * @throws IOException
+	 *             if the import fails.
+	 */
 	protected RegistryImpl(Reader reader, int[] requiredVersion) throws IOException {
 		super();
 		read(reader);
 		checkVersion(requiredVersion);
 	}
 
+	/**
+	 * Create a new registry instance by reading in data from a file.
+	 * 
+	 * @param file
+	 *            the file containing registry data.
+	 * @param requiredVersion
+	 *            the version that the imported data must match.
+	 * @throws IOException
+	 *             if the import fails.
+	 */
 	protected RegistryImpl(File file, int[] requiredVersion) throws IOException {
 		super();
 		Code.debug("RegistryImpl(" + file + ")");
@@ -83,6 +113,7 @@ final class RegistryImpl extends Registry implements Serializable {
 		checkVersion(requiredVersion);
 	}
 
+	@Override
 	public void setFile(File file) {
 		if (m_dataFile != null) {
 			// if the file is not null, then this is probably not a new
@@ -92,10 +123,12 @@ final class RegistryImpl extends Registry implements Serializable {
 		m_dataFile = file;
 	}
 
+	@Override
 	public File getFile() {
 		return m_dataFile;
 	}
 
+	@Override
 	public int[] getVersion() {
 		return m_registryVersion;
 	}
@@ -108,6 +141,7 @@ final class RegistryImpl extends Registry implements Serializable {
 	 * @return <code>true</code> means that the Registry is out of sync with the
 	 *         stored version.
 	 */
+	@Override
 	public boolean isAltered() {
 		return m_altered;
 	}
@@ -115,6 +149,7 @@ final class RegistryImpl extends Registry implements Serializable {
 	/**
 	 * Dumps the contents of the Registry for debugging.
 	 */
+	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("Registry dump: ").append(new Date()).append(NL);
@@ -133,6 +168,7 @@ final class RegistryImpl extends Registry implements Serializable {
 		return sb.toString();
 	}
 
+	@Override
 	public void read(Reader reader) {
 		BufferedReader br = new BufferedReader(reader);
 		String currentGroup = null;
@@ -148,7 +184,7 @@ final class RegistryImpl extends Registry implements Serializable {
 			if (line == null || !line.startsWith(SIGNATURE)) {
 				throw new RegistryFormatException("not a jmonkey registry file");
 			}
-			
+
 			int[] v = stringToVersion(line.substring(SIGNATURE.length()));
 			if (v == null) {
 				String msg = "jmonkey registry format not specified";
@@ -195,11 +231,12 @@ final class RegistryImpl extends Registry implements Serializable {
 				bais.close();
 				sb.setLength(0);
 			}
-
 		} catch (IOException ioe0) {
+			// TODO
 		}
 	}
 
+	@Override
 	public void write(Writer writer) throws IOException {
 		try {
 			writer.write(SIGNATURE + versionToString(FILE_SYNTAX_VERSION) + NL);
@@ -221,6 +258,15 @@ final class RegistryImpl extends Registry implements Serializable {
 		}
 	}
 
+	/**
+	 * Parse a string version into major and minor version numbers.
+	 * 
+	 * @param str
+	 *            the string version.
+	 * @return the parsed version number in the format { major, minor }.
+	 * @throws RegistryFormatException
+	 *             if parsing fails.
+	 */
 	private int[] stringToVersion(String str) throws RegistryFormatException {
 		str = str.trim();
 		if (str.equalsIgnoreCase("unspecified")) {
@@ -243,6 +289,13 @@ final class RegistryImpl extends Registry implements Serializable {
 		}
 	}
 
+	/**
+	 * Print a version to a string.
+	 * 
+	 * @param version
+	 *            the version to print, in the format {major, minor}.
+	 * @return a string representation of the version.
+	 */
 	private String versionToString(int[] version) {
 		if (version == null) {
 			return "unspecified";
@@ -258,6 +311,12 @@ final class RegistryImpl extends Registry implements Serializable {
 		}
 	}
 
+	/**
+	 * Check a version against this registry's current version.
+	 * 
+	 * @param requiredVersion the version to compare against.
+	 * @throws RegistryFormatException
+	 */
 	private void checkVersion(int[] requiredVersion) throws RegistryFormatException {
 		if (m_registryVersion == null) {
 			m_registryVersion = requiredVersion;
@@ -270,6 +329,11 @@ final class RegistryImpl extends Registry implements Serializable {
 		}
 	}
 
+	/**
+	 * Load registry data from a file.
+	 * 
+	 * @throws IOException if loading fails.
+	 */
 	private void loadData() throws IOException {
 		if (m_dataFile != null) {
 			boolean created = m_dataFile.createNewFile();
@@ -284,6 +348,12 @@ final class RegistryImpl extends Registry implements Serializable {
 		}
 	}
 
+	
+	/**
+	 * Write registry data to a file.
+	 * 
+	 * @throws IOException if writing fails.
+	 */
 	private void storeData() throws IOException {
 		if (m_dataFile != null) {
 			m_dataFile.createNewFile();
@@ -294,6 +364,12 @@ final class RegistryImpl extends Registry implements Serializable {
 		}
 	}
 
+	/**
+	 * Create a group if it does not exist.
+	 * 
+	 * @param group the name of the group.
+	 * @return the existing group if there was one, or the new group.
+	 */
 	private RegistryGroup ensureGroup(String group) {
 		RegistryGroup rg = (RegistryGroup) m_groups.get(group);
 		if (rg == null) {
@@ -304,6 +380,14 @@ final class RegistryImpl extends Registry implements Serializable {
 		return rg;
 	}
 
+	/**
+	 * Set a registry property. Used by all other setProperty methods.
+	 * 
+	 * @param group
+	 * @param key
+	 * @param value
+	 * @param type
+	 */
 	private void setBasicProperty(String group, String key, String value, int type) {
 		if (value == null) {
 			throw new IllegalArgumentException("Cannot set a property to null.");
@@ -314,6 +398,14 @@ final class RegistryImpl extends Registry implements Serializable {
 		}
 	}
 
+	/**
+	 * Get a registry property. Used by all other getProperty methods.
+	 * 
+	 * @param group
+	 * @param key
+	 * @param type
+	 * @return
+	 */
 	private String getBasicProperty(String group, String key, int type) {
 		RegistryGroup rg = (RegistryGroup) m_groups.get(group);
 		if (rg == null) {
@@ -366,7 +458,7 @@ final class RegistryImpl extends Registry implements Serializable {
 		if (!m_groups.containsKey(group)) {
 			return Registry.TYPE_NONE;
 		}
-		
+
 		String value = ((RegistryGroup) m_groups.get(group)).getProperty(key);
 		if (value == null) {
 			return Registry.TYPE_NONE;
@@ -375,6 +467,13 @@ final class RegistryImpl extends Registry implements Serializable {
 		}
 	}
 
+	/**
+	 * Convert a type to the string marker used when storing properties.
+	 * 
+	 * @param type
+	 * @return the string marker.
+	 * @throws RegistryException
+	 */
 	static String typeToMarker(int type) throws RegistryException {
 		switch (type) {
 		case Registry.TYPE_STRING_SINGLE:
@@ -456,6 +555,13 @@ final class RegistryImpl extends Registry implements Serializable {
 		}
 	}
 
+	/**
+	 * Serialize an object.
+	 * 
+	 * @param o the object to seralize.
+	 * @return the string representation of the object.
+	 * @throws RegistryException if serialization fails.
+	 */
 	private String encode(Object o) throws RegistryException {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -475,6 +581,13 @@ final class RegistryImpl extends Registry implements Serializable {
 		}
 	}
 
+	/**
+	 * Deserialize an object.
+	 * 
+	 * @param in the string representation of the object.
+	 * @return the object.
+	 * @throws RegistryException if deserialization fails.
+	 */
 	private Object decode(String in) throws RegistryException {
 		StringTokenizer stok = new StringTokenizer(in, "|");
 		ArrayList<String> list = new ArrayList<String>();
@@ -504,17 +617,19 @@ final class RegistryImpl extends Registry implements Serializable {
 	// Getters
 	// ===============================================================================
 
+	@Override
 	public String getString(String group, String key) {
 		return getBasicProperty(group, key, TYPE_STRING_SINGLE);
 	}
 
+	@Override
 	public String[] getStringArray(String group, String key) {
 		String res = getBasicProperty(group, key, TYPE_STRING_ARRAY);
 		return (String[]) decode(res);
 	}
 
+	@Override
 	public boolean getBoolean(String group, String key) {
-		Code.debug("getBoolean(\"" + group + "\", \"" + key + "\")");
 		String res = getBasicProperty(group, key, TYPE_BOOLEAN_SINGLE);
 		if (res.equalsIgnoreCase("true")) {
 			return true;
@@ -525,6 +640,7 @@ final class RegistryImpl extends Registry implements Serializable {
 		}
 	}
 
+	@Override
 	public int getInteger(String group, String key) {
 		String res = getBasicProperty(group, key, TYPE_INT_SINGLE).trim();
 		try {
@@ -534,11 +650,13 @@ final class RegistryImpl extends Registry implements Serializable {
 		}
 	}
 
+	@Override
 	public int[] getIntegerArray(String group, String key) {
 		String res = getBasicProperty(group, key, TYPE_INT_ARRAY);
 		return (int[]) decode(res);
 	}
-
+	
+	@Override
 	public long getLong(String group, String key) {
 		String res = getBasicProperty(group, key, TYPE_LONG_SINGLE).trim();
 		try {
@@ -547,7 +665,8 @@ final class RegistryImpl extends Registry implements Serializable {
 			throw new RegistryException("malformed long value", ex);
 		}
 	}
-
+	
+	@Override
 	public byte getByte(String group, String key) {
 		String res = getBasicProperty(group, key, TYPE_BYTE_SINGLE).trim();
 		try {
@@ -557,11 +676,13 @@ final class RegistryImpl extends Registry implements Serializable {
 		}
 	}
 
+	@Override
 	public byte[] getByteArray(String group, String key) {
 		String res = getBasicProperty(group, key, TYPE_BYTE_ARRAY);
 		return (byte[]) decode(res);
 	}
 
+	@Override
 	public char getChar(String group, String key) {
 		String res = getBasicProperty(group, key, TYPE_CHAR_SINGLE).trim();
 		if (res.length() != 1) {
@@ -570,11 +691,13 @@ final class RegistryImpl extends Registry implements Serializable {
 		return res.charAt(0);
 	}
 
+	@Override
 	public char[] getCharArray(String group, String key) {
 		String res = getBasicProperty(group, key, TYPE_CHAR_ARRAY);
 		return (char[]) decode(res);
 	}
 
+	@Override
 	public double getDouble(String group, String key) {
 		String res = getBasicProperty(group, key, TYPE_DOUBLE_SINGLE).trim();
 		try {
@@ -584,6 +707,7 @@ final class RegistryImpl extends Registry implements Serializable {
 		}
 	}
 
+	@Override
 	public float getFloat(String group, String key) {
 		String res = getBasicProperty(group, key, TYPE_FLOAT_SINGLE).trim();
 		try {
@@ -593,16 +717,19 @@ final class RegistryImpl extends Registry implements Serializable {
 		}
 	}
 
+	@Override
 	public Object getObject(String group, String key) {
 		String res = getBasicProperty(group, key, TYPE_OBJECT_SINGLE);
 		return decode(res);
 	}
 
+	@Override
 	public Object[] getObjectArray(String group, String key) {
 		String res = getBasicProperty(group, key, TYPE_OBJECT_ARRAY);
 		return (Object[]) decode(res);
 	}
 
+	@Override
 	public short getShort(String group, String key) {
 		String res = getBasicProperty(group, key, TYPE_SHORT_SINGLE).trim();
 		try {
@@ -616,62 +743,77 @@ final class RegistryImpl extends Registry implements Serializable {
 	// Setters
 	// ===============================================================================
 
+	@Override
 	public void setProperty(String group, String key, String value) {
 		setBasicProperty(group, key, value, TYPE_STRING_SINGLE);
 	}
 
+	@Override
 	public void setProperty(String group, String key, String[] value) {
 		setBasicProperty(group, key, encode(value), TYPE_STRING_ARRAY);
 	}
 
+	@Override
 	public void setProperty(String group, String key, boolean value) {
 		setBasicProperty(group, key, Boolean.toString(value), TYPE_BOOLEAN_SINGLE);
 	}
 
+	@Override
 	public void setProperty(String group, String key, int value) {
 		setBasicProperty(group, key, Integer.toString(value), TYPE_INT_SINGLE);
 	}
 
+	@Override
 	public void setProperty(String group, String key, int[] value) {
 		setBasicProperty(group, key, encode(value), TYPE_INT_ARRAY);
 	}
 
+	@Override
 	public void setProperty(String group, String key, long value) {
 		setBasicProperty(group, key, Long.toString(value), TYPE_LONG_SINGLE);
 	}
 
+	@Override
 	public void setProperty(String group, String key, byte value) {
 		setBasicProperty(group, key, Byte.toString(value), TYPE_BYTE_SINGLE);
 	}
 
+	@Override
 	public void setProperty(String group, String key, byte[] value) {
 		setBasicProperty(group, key, encode(value), TYPE_BYTE_ARRAY);
 	}
 
+	@Override
 	public void setProperty(String group, String key, char value) {
 		setBasicProperty(group, key, Character.toString(value), TYPE_CHAR_SINGLE);
 	}
 
+	@Override
 	public void setProperty(String group, String key, char[] value) {
 		setBasicProperty(group, key, encode(value), TYPE_CHAR_ARRAY);
 	}
 
+	@Override
 	public void setProperty(String group, String key, double value) {
 		setBasicProperty(group, key, Double.toString(value), TYPE_DOUBLE_SINGLE);
 	}
 
+	@Override
 	public void setProperty(String group, String key, float value) {
 		setBasicProperty(group, key, Float.toString(value), TYPE_FLOAT_SINGLE);
 	}
 
+	@Override
 	public void setProperty(String group, String key, Serializable value) {
 		setBasicProperty(group, key, encode(value), TYPE_OBJECT_SINGLE);
 	}
 
+	@Override
 	public void setProperty(String group, String key, Serializable[] value) {
 		setBasicProperty(group, key, encode(value), TYPE_OBJECT_ARRAY);
 	}
 
+	@Override
 	public void setProperty(String group, String key, short value) {
 		setBasicProperty(group, key, Short.toString(value), TYPE_SHORT_SINGLE);
 	}
@@ -680,6 +822,7 @@ final class RegistryImpl extends Registry implements Serializable {
 	// Others
 	// ===============================================================================
 
+	@Override
 	public boolean isProperty(String group, String key) {
 		if (isGroup(group)) {
 			return ((RegistryGroup) m_groups.get(group)).containsKey(key);
@@ -688,14 +831,17 @@ final class RegistryImpl extends Registry implements Serializable {
 		}
 	}
 
+	@Override
 	public boolean isGroup(String group) {
 		return m_groups.containsKey(group);
 	}
 
+	@Override
 	public Enumeration<String> getGroups() {
 		return m_groups.keys();
 	}
 
+	@Override
 	public Enumeration<Object> getKeys(String group) {
 		if (!m_groups.containsKey(group)) {
 			return new Enumeration<Object>() {
@@ -713,6 +859,7 @@ final class RegistryImpl extends Registry implements Serializable {
 		return ((RegistryGroup) m_groups.get(group)).keys();
 	}
 
+	@Override
 	public int sizeOf(String group) {
 		if (isGroup(group)) {
 			return ((RegistryGroup) m_groups.get(group)).size();
@@ -720,19 +867,23 @@ final class RegistryImpl extends Registry implements Serializable {
 		return 0;
 	}
 
+	@Override
 	public boolean isBlank() {
 		return m_groups.size() == 0;
 	}
 
+	@Override
 	public int size() {
 		return m_groups.size();
 	}
 
+	@Override
 	public void deleteGroup(String group) {
 		m_groups.remove(group);
 		m_altered = true;
 	}
 
+	@Override
 	public void deleteProperty(String group, String key) {
 		if (isGroup(group)) {
 			((RegistryGroup) m_groups.get(group)).remove(key);
@@ -740,11 +891,13 @@ final class RegistryImpl extends Registry implements Serializable {
 		}
 	}
 
+	@Override
 	public void deleteAll() {
 		m_groups.clear();
 		m_altered = true;
 	}
 
+	@Override
 	public RegistryGroup referenceGroup(String group) {
 		if (isGroup(group)) {
 			return (RegistryGroup) m_groups.get(group);
@@ -753,6 +906,7 @@ final class RegistryImpl extends Registry implements Serializable {
 		}
 	}
 
+	@Override
 	public RegistryGroup exportGroup(String group) {
 		if (isGroup(group)) {
 			return (RegistryGroup) ((RegistryGroup) m_groups.get(group)).clone();
@@ -761,6 +915,7 @@ final class RegistryImpl extends Registry implements Serializable {
 		}
 	}
 
+	@Override
 	public void importGroup(String group, RegistryGroup registryGroup) {
 		if (!isGroup(group)) {
 			RegistryGroup rg = (RegistryGroup) registryGroup.clone();
@@ -769,6 +924,7 @@ final class RegistryImpl extends Registry implements Serializable {
 		}
 	}
 
+	@Override
 	public void initGroup(String group, String[][] props) {
 		if (!isGroup(group)) {
 			RegistryGroup rg = new RegistryGroup();
@@ -787,13 +943,23 @@ final class RegistryImpl extends Registry implements Serializable {
 		}
 	}
 
+	/**
+	 * Add a group, replacing an existing group with the same name if one
+	 * exists.
+	 * 
+	 * @param group
+	 *            the name of the group to replace
+	 * @param
+	 */
 	public void replaceGroup(String group, RegistryGroup RegistryGroup) {
 		m_groups.put(group, RegistryGroup);
 		m_altered = true;
 	}
 
+	@Override
 	public void mergeRegistry(Registry registry) {
 		if (registry instanceof Map) {
+			// TODO: dumb
 			m_groups.putAll((Map) registry);
 			m_altered = true;
 		}

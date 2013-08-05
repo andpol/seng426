@@ -9,8 +9,6 @@ import java.security.MessageDigest;
 import java.util.Enumeration;
 
 public abstract class Registry {
-	private static String FS = File.separator;
-
 	public static final int TYPE_NONE = 0; // None - not a property
 	public static final int TYPE_STRING_SINGLE = 1; // String
 	public static final int TYPE_STRING_ARRAY = 2; // String Array
@@ -29,6 +27,11 @@ public abstract class Registry {
 	public static final int TYPE_FLOAT_SINGLE = 15; // float
 	public static final int TYPE_CORRUPT = 16; // float
 
+	/**
+	 * Convert a registry type integer to the class's string name.
+	 * @param type
+	 * @return the class's string name.
+	 */
 	public static String typeToJavaType(int type) {
 		switch (type) {
 		case Registry.TYPE_STRING_SINGLE:
@@ -66,6 +69,12 @@ public abstract class Registry {
 		}
 	}
 
+	/**
+	 * Convert a string class name into the appropriate registry type integer.
+	 * @param type a string class name.
+	 * @return the registry type int.
+	 * @throws RegistryException if the type is not supported by the registry.
+	 */
 	public static int javaTypeToType(String type) throws RegistryException {
 		if (type.equals("String")) {
 			return Registry.TYPE_STRING_SINGLE;
@@ -107,10 +116,11 @@ public abstract class Registry {
 	 * The directory will be called <user_home>/.lexi.
 	 */
 	public static final File RESOURCE_DIRECTORY = new File(Runtime.ensureDirectory(System
-			.getProperty("user.home") + FS + ".lexi" + FS + "export"));
+			.getProperty("user.home") + File.separator + ".lexi" + File.separator + "export"));
 
 	public static final File REGISTRY_DIRECTORY = new File(
-			Runtime.ensureDirectory(RESOURCE_DIRECTORY.getAbsolutePath() + FS + "registry"));
+			Runtime.ensureDirectory(RESOURCE_DIRECTORY.getAbsolutePath() + File.separator
+					+ "registry"));
 
 	protected Registry() {
 		super();

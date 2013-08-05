@@ -5,6 +5,7 @@ package com.jmonkey.export;
  * inconsistent.
  */
 public class RegistryException extends RuntimeException {
+	private static final long serialVersionUID = -6866454479978066517L;
 
 	public RegistryException() {
 		super();

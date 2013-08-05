@@ -23,12 +23,27 @@ import javax.swing.table.DefaultTableCellRenderer;
 import com.jmonkey.export.Format;
 import com.jmonkey.export.Runtime;
 
+/**
+ * A dialog that shows the chosen colours in a table.
+ */
 public final class ColourPropertySheet extends JDialog {
+	private static final long serialVersionUID = -4297825448329394101L;
+
 	private JWP m_app;
 	private Properties m_props = null;
 	private boolean m_allowAdd = false;
 	private PairTableModel m_model = null;
 
+	/**
+	 * Create a new ColourPropertySheet dialog.
+	 * 
+	 * @param app
+	 *            the current JWP application.
+	 * @param p
+	 *            the Properties object containing the colours.
+	 * @param allowAdd
+	 *            true if colours can be added.
+	 */
 	public ColourPropertySheet(JWP app, Properties p, boolean allowAdd) {
 		super(app);
 		m_app = app;
@@ -42,6 +57,10 @@ public final class ColourPropertySheet extends JDialog {
 
 	private JWP getMain() {
 		return m_app;
+	}
+
+	protected final Properties getProperties() {
+		return m_props;
 	}
 
 	private void doExit() {
@@ -108,18 +127,19 @@ public final class ColourPropertySheet extends JDialog {
 		});
 	}
 
-	protected final Properties getProperties() {
-		return m_props;
-	}
-
+	/**
+	 * Renders colours in the colour properties table. Sets the background to
+	 * the colour and picks a contrasting colour for the foregroud.
+	 */
 	private final class ColourCellRenderer extends DefaultTableCellRenderer {
+		private static final long serialVersionUID = -3775028200991338713L;
+
 		private final Color defaultBackground = getBackground();
 
 		private final Color defaultForeground = getForeground();
 
 		public Component getTableCellRendererComponent(JTable table, Object value,
 				boolean isSelected, boolean hasFocus, int row, int column) {
-			// System.out.println(toString());
 			setValue(value);
 
 			if (!isSelected & column == 1) {
@@ -129,9 +149,8 @@ public final class ColourPropertySheet extends JDialog {
 					setForeground(Runtime.getContrastingTextColor(c));
 				} catch (Throwable t) {
 					// Ignore this, its just a bad colour.
-					Color c = Color.black;
-					setBackground(c);
-					setForeground(Runtime.getContrastingTextColor(c));
+					setBackground(Color.black);
+					setForeground(Color.white);
 					setValue("#000000");
 				}
 			} else {
@@ -142,20 +161,28 @@ public final class ColourPropertySheet extends JDialog {
 		}
 	}
 
+	/**
+	 * The model for the colour properties table.
+	 */
 	private final class PairTableModel extends AbstractTableModel {
+		private static final long serialVersionUID = -6732752958615518115L;
 
 		public PairTableModel() {
 			super();
 		}
 
+		@Override
 		public int getRowCount() {
 			return getProperties().size();
 		}
 
+		@Override
 		public int getColumnCount() {
+			// Two columns
 			return 2;
 		}
 
+		@Override
 		public String getColumnName(int columnIndex) {
 			switch (columnIndex) {
 			case 0:
@@ -167,7 +194,9 @@ public final class ColourPropertySheet extends JDialog {
 			}
 		}
 
-		public Class getColumnClass(int columnIndex) {
+		@Override
+		public Class<?> getColumnClass(int columnIndex) {
+			// All columns are strings
 			switch (columnIndex) {
 			case 0:
 				return java.lang.String.class;
@@ -178,7 +207,9 @@ public final class ColourPropertySheet extends JDialog {
 			}
 		}
 
+		@Override
 		public boolean isCellEditable(int rowIndex, int columnIndex) {
+			// Only column 1 is editable
 			switch (columnIndex) {
 			case 0:
 				return false;
@@ -189,6 +220,7 @@ public final class ColourPropertySheet extends JDialog {
 			}
 		}
 
+		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			switch (columnIndex) {
 			case 0:
@@ -201,9 +233,11 @@ public final class ColourPropertySheet extends JDialog {
 			}
 		}
 
+		@Override
 		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 			switch (columnIndex) {
 			case 0:
+				// Column 0 is not editable
 				// getProperties().keySet().toArray()[rowIndex] =
 				// aValue.toString();
 				break;

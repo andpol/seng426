@@ -11,11 +11,17 @@ import javax.swing.JOptionPane;
 import com.jmonkey.office.jwp.support.images.Loader;
 
 public class OfficeHelp extends JFrame {
+	private static final long serialVersionUID = -8603202456122825229L;
+
 	private String startLoc = null;
 
 	private Class<?> iceClass;
 	private JComponent iceBrowser;
 
+	/**
+	 * Create a new help window.
+	 * @param helpFile the help file to show in the window.
+	 */
 	public OfficeHelp(String helpFile) {
 		super("Program Help");
 		setIconImage(Loader.load("help_book16.gif"));
