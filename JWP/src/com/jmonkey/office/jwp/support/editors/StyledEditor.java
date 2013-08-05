@@ -33,6 +33,7 @@ import javax.swing.event.HyperlinkListener;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.EditorKit;
 import javax.swing.text.Element;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.StyledDocument;
@@ -155,9 +156,7 @@ public abstract class StyledEditor extends Editor implements MouseListener, KeyL
 	/**
 	 * Returns the content type as a MIME string.
 	 */
-	public final String getContentType() {
-		return m_editor.getContentType();
-	}
+	public abstract String getContentType();
 
 	public Element getCurrentParagraph() {
 		return m_currentParagraph;
@@ -218,17 +217,16 @@ public abstract class StyledEditor extends Editor implements MouseListener, KeyL
 	}
 
 	public void init() {
-		// JPanel contentPane = new JPanel();
 		setLayout(new BorderLayout());
 		getRegistry();
 
 		// Editor Setup
 		JScrollPane sp = new JScrollPane();
 		m_editor = new JTextPane();
-		m_editor.setContentType(getContentType()); // set to plain text.
+		m_editor.setContentType(getContentType());
 		m_editor.setCaretColor(Color.black);
 		m_editor.getCaret().setBlinkRate(300);
-
+		
 		// Event Listeners
 		m_editor.addFocusListener(getEventListener());
 		m_editor.getDocument().addDocumentListener(getEventListener());
@@ -250,6 +248,7 @@ public abstract class StyledEditor extends Editor implements MouseListener, KeyL
 					bis = new BufferedInputStream(new FileInputStream(m_frtFile));
 					StyledEditorKit kit = (StyledEditorKit) m_editor.getEditorKit();
 					kit.read(bis, m_editor.getStyledDocument(), m_position);
+					bis.close();
 					setChanged(true);
 				} catch (BadLocationException ble0) {
 					Code.failed(ble0);
@@ -400,7 +399,7 @@ public abstract class StyledEditor extends Editor implements MouseListener, KeyL
 				BufferedOutputStream bos = null;
 				try {
 					bos = new BufferedOutputStream(new FileOutputStream(m_fwtFile));
-					StyledEditorKit kit = (StyledEditorKit) m_editor.getEditorKit();
+					EditorKit kit = m_editor.getEditorKit();
 					StyledDocument doc = m_editor.getStyledDocument();
 					kit.write(bos, doc, 0, doc.getLength());
 					setChanged(false);
@@ -408,6 +407,13 @@ public abstract class StyledEditor extends Editor implements MouseListener, KeyL
 					Code.failed(ble0);
 				} catch (IOException ioe0) {
 					Code.failed(ioe0);
+				} finally {
+					try {
+						if (bos != null) {
+							bos.close();
+						}
+					} catch (IOException e) {
+					}
 				}
 			}
 		});

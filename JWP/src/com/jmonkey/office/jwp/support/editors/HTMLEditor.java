@@ -29,4 +29,9 @@ public final class HTMLEditor extends StyledEditor {
 	public final String[] getFileExtensions() {
 		return FILE_EXTENSIONS;
 	}
+
+	@Override
+	public String getContentType() {
+		return CONTENT_TYPE;
+	}
 }

@@ -128,7 +128,6 @@ public class EditorActionManager extends ActionManager {
 				int dot = e.getDot();
 				int mark = e.getMark();
 				if (dot == mark) {
-
 					JTextComponent c = (JTextComponent) e.getSource();
 					StyledDocument doc = (StyledDocument) c.getDocument();
 					Element run = doc.getCharacterElement(Math.max(dot - 1, 0));

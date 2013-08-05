@@ -88,6 +88,11 @@ public class StyledEditorTest {
 			return null;
 		}
 
+		@Override
+		public String getContentType() {
+			return null;
+		}
+
 	}
 
 	@Test
