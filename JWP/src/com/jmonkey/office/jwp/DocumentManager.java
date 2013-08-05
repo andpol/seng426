@@ -489,7 +489,6 @@ public final class DocumentManager extends DefaultDesktopManager implements Desk
 				return false;
 			}
 		} else {
-			System.exit(0);
 			return true;
 		}
 	}
