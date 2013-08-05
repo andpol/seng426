@@ -377,6 +377,7 @@ public abstract class StyledEditor extends Editor implements MouseListener, KeyL
 	 *            <code>false</code> marks it as unchanged.
 	 */
 	public final void setChanged(boolean changed) {
+		writing = !changed ? false: writing;
 		m_changed = changed;
 		postActivate();
 	}
@@ -394,6 +395,7 @@ public abstract class StyledEditor extends Editor implements MouseListener, KeyL
 	}
 
 	public void write(File file) throws IOException {
+		writing = true;
 		EditorActionManager.threads(new FWThread(file) {
 			public void run() {
 				BufferedOutputStream bos = null;

@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Savepoint;
 
 import javax.swing.BorderFactory;
 import javax.swing.JEditorPane;
@@ -357,6 +358,7 @@ public final class TEXTEditor extends Editor implements MouseListener, KeyListen
 	}
 
 	public final void setChanged(boolean changed) {
+		writing = !changed ? false: writing;
 		m_changed = changed;
 		postActivate();
 	}
@@ -374,6 +376,7 @@ public final class TEXTEditor extends Editor implements MouseListener, KeyListen
 	}
 
 	public void write(File file) throws IOException {
+		writing = true;
 		EditorActionManager.threads(new FWThread(file) {
 			public void run() {
 				BufferedWriter bw = null;

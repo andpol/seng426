@@ -463,6 +463,7 @@ public final class DocumentManager extends DefaultDesktopManager implements Desk
 
 		public void actionPerformed(ActionEvent e) {
 			closeActiveDocument();
+			p.updateOpenWindowsMenu();
 		}
 	}
 
@@ -472,6 +473,7 @@ public final class DocumentManager extends DefaultDesktopManager implements Desk
 
 	protected final boolean closeActiveDocument() {
 		Editor ed = active().getEditor();
+		boolean close;
 		if (ed.isChanged()) {
 			switch (JOptionPane.showConfirmDialog(p, "Document Changed!\n\"" + active().getTitle()
 					+ "\"\nDo you want to save the changes?", "Save Changes?",
@@ -482,15 +484,22 @@ public final class DocumentManager extends DefaultDesktopManager implements Desk
 				} else {
 					editorSave(ed);
 				}
-				return !ed.isChanged();
+				close = ed.isWriting();
+				break;
 			case JOptionPane.NO_OPTION:
-				return true;
+				System.out.println("here");
+				close = true;
+				break;
 			default:
-				return false;
+				close = false;
 			}
 		} else {
-			return true;
+			close = true;
 		}
+		System.out.println("changd: " + ed.isChanged());
+		System.out.println("closed: " + close);
+		active().firePropertyChange("closed", false, close);
+		return close;
 	}
 
 	protected final class CloseAllAction extends AbstractAction {

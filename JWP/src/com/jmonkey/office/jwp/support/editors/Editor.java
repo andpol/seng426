@@ -39,6 +39,8 @@ public abstract class Editor extends JPanel {
 	private UndoManager m_undoManager = null;
 
 	private EditorActionManager m_editorActionManager;
+	
+	protected boolean writing = false;
 
 	protected Editor(EditorActionManager eam) {
 		if (eam == null) {
@@ -272,4 +274,8 @@ public abstract class Editor extends JPanel {
 	}
 
 	public abstract void write(File file) throws IOException;
+	
+	public boolean isWriting() {
+		return writing;
+	}
 }
