@@ -112,7 +112,6 @@ methodName + "'", e);
 	public void testGetSetValueAt() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		PropertySheetDialog u = (PropertySheetDialog) psd.newInstance(j,p,true);
 		AbstractTableModel p = (AbstractTableModel) ptm.newInstance(u);
-		System.out.println("Size " + u.getProperties().size());
 		String input = "Hola";
 		p.setValueAt(input, 0, 1);
 		String output = (String)p.getValueAt(0, 1);
@@ -131,6 +130,14 @@ methodName + "'", e);
 	{
 		assertEquals(p,PropertySheetDialog.display(j, p));
 		assertEquals(p,PropertySheetDialog.display(j, p,true));
+	}
+	
+	@Test
+	public void testdoExit() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+		PropertySheetDialog u = (PropertySheetDialog) psd.newInstance(j,p,true);
+		invokePrivateMethod(u, "doExit");
+		assertNotNull(u);
+		
 	}
 	
 

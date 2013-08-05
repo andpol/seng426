@@ -3,17 +3,12 @@ package com.jmonkey.office.jwp.support;
 
 import static org.junit.Assert.*;
 
-import java.awt.event.ItemEvent;
-
 import javax.swing.Action;
-import javax.swing.text.MutableAttributeSet;
-import javax.swing.text.StyleConstants;
+
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.jmonkey.export.RegistryFormatException;
-import com.jmonkey.office.jwp.JWP;
 import com.jmonkey.office.jwp.support.editors.HTMLEditor;
 
 
