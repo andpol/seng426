@@ -699,16 +699,6 @@ public class RegistryImplTest {
 		assertEquals(INT_VALUE, registryImpl.getInteger(DEFAULT_GROUP_NAME, INT_KEY));
 	}
 
-	@Test
-	public void testRead() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testWrite() {
-		fail("Not yet implemented");
-	}
-
 	@Test(expected = RegistryException.class)
 	public void testTypeToMarkerBadType() {
 		RegistryImpl.typeToMarker(-1);
