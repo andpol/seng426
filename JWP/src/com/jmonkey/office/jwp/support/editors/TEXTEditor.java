@@ -46,6 +46,8 @@ import com.jmonkey.office.jwp.support.EditorActionManager;
  * This class is the Lexi document editor for plain text documents.
  */
 public final class TEXTEditor extends Editor implements MouseListener, KeyListener {
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * The Content type of the editor.
 	 */
@@ -67,7 +69,7 @@ public final class TEXTEditor extends Editor implements MouseListener, KeyListen
 	/**
 	 * Document Event manager
 	 */
-	private final class EventListener extends Object implements DocumentListener, UndoableEditListener, HyperlinkListener, FocusListener,
+	private final static class EventListener extends Object implements DocumentListener, UndoableEditListener, HyperlinkListener, FocusListener,
 			VetoableChangeListener, ChangeListener {
 		private TEXTEditor m_parent = null;
 
@@ -286,7 +288,7 @@ public final class TEXTEditor extends Editor implements MouseListener, KeyListen
 	public final boolean isNew() {
 		File file = getFile();
 		if (file != null) {
-			return !(file.exists() & file.isFile());
+			return !(file.exists() && file.isFile());
 		} else {
 			return true;
 		}
