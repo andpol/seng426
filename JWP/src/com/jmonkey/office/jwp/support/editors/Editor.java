@@ -41,6 +41,9 @@ public abstract class Editor extends JPanel {
 	private EditorActionManager m_editorActionManager;
 
 	protected Editor(EditorActionManager eam) {
+		if (eam == null) {
+			throw new IllegalArgumentException();
+		}
 		m_editorActionManager = eam;
 	}
 

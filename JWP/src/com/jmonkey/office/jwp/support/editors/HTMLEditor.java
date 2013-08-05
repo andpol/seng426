@@ -6,6 +6,8 @@ import com.jmonkey.office.jwp.support.EditorActionManager;
  * This class is the Lexi document editor for HTML documents.
  */
 public final class HTMLEditor extends StyledEditor {
+	private static final long serialVersionUID = 8275900699859549476L;
+
 	/**
 	 * The Content type of the editor.
 	 */
@@ -23,6 +25,7 @@ public final class HTMLEditor extends StyledEditor {
 		super(eam);
 	}
 
+	@Override
 	public final String[] getFileExtensions() {
 		return FILE_EXTENSIONS;
 	}
