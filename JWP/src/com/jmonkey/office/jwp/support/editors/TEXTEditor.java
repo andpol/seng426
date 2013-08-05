@@ -144,6 +144,7 @@ public final class TEXTEditor extends Editor implements MouseListener, KeyListen
 					EditorKit kit = m_editor.getEditorKit();
 					Document doc = m_editor.getDocument();
 					kit.read(br, doc, doc.getLength());
+					br.close();
 					setChanged(true);
 				} catch (BadLocationException ble0) {
 					Code.failed(ble0);
@@ -264,6 +265,7 @@ public final class TEXTEditor extends Editor implements MouseListener, KeyListen
 					br = new BufferedReader(new FileReader(m_frtFile));
 					EditorKit kit = m_editor.getEditorKit();
 					kit.read(br, m_editor.getDocument(), m_position);
+					br.close();
 					setChanged(true);
 				} catch (BadLocationException ble0) {
 					Code.failed(ble0);
@@ -335,6 +337,7 @@ public final class TEXTEditor extends Editor implements MouseListener, KeyListen
 				try {
 					br = new BufferedReader(new FileReader(m_frtFile));
 					m_editor.getEditorKit().read(br, m_editor.getDocument(), 0);
+					br.close();
 					setChanged(false);
 				} catch (BadLocationException ble0) {
 					Code.failed(ble0);
@@ -385,6 +388,7 @@ public final class TEXTEditor extends Editor implements MouseListener, KeyListen
 					EditorKit kit = m_editor.getEditorKit();
 					Document doc = m_editor.getDocument();
 					kit.write(bw, doc, 0, doc.getLength());
+					bw.close();
 					setChanged(false);
 				} catch (BadLocationException ble0) {
 					Code.failed(ble0);

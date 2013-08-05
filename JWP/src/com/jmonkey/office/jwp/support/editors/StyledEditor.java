@@ -135,6 +135,7 @@ public abstract class StyledEditor extends Editor implements MouseListener, KeyL
 					StyledEditorKit kit = (StyledEditorKit) m_editor.getEditorKit();
 					StyledDocument doc = m_editor.getStyledDocument();
 					kit.read(bis, doc, doc.getLength());
+					bis.close();
 					setChanged(true);
 				} catch (BadLocationException ble0) {
 					Code.failed(ble0);
@@ -344,6 +345,7 @@ public abstract class StyledEditor extends Editor implements MouseListener, KeyL
 					bis = new BufferedInputStream(new FileInputStream(m_frtFile));
 					StyledEditorKit kit = (StyledEditorKit) m_editor.getEditorKit();
 					kit.read(bis, m_editor.getStyledDocument(), 0);
+					bis.close();
 					setChanged(false);
 				} catch (BadLocationException ble0) {
 					Code.failed(ble0);
