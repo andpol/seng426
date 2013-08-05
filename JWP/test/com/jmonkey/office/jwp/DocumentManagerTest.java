@@ -1,17 +1,25 @@
 package com.jmonkey.office.jwp;
 
 import static org.junit.Assert.assertEquals;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.Properties;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+
+import java.io.File;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.jmonkey.export.RegistryFormatException;
+import com.jmonkey.office.jwp.support.Editor;
 
-public class DocumentFrameTest {
+public class DocumentManagerTest {
 
 	private static JWP jwp;
 	private static DocumentManager manager;
@@ -41,7 +49,7 @@ public class DocumentFrameTest {
 	public void testEditorOpenFile() {
 		File file = new File(filepath);
 
-		manager.editoropen(file);
+		manager.editorOpen(file);
 	}
 
 	@Test
@@ -123,7 +131,7 @@ public class DocumentFrameTest {
 
 	@Test
 	public void testGetOpenDocument() {
-		DocumentFrame df = manager.getopenDocument("text.txt");
+		DocumentFrame df = manager.getOpenDocument("text.txt");
 	}
 
 	@Test
@@ -143,7 +151,7 @@ public class DocumentFrameTest {
 
 	@Test
 	public void testInit() {
-		manager.init();
+		invokePrivateMethod(manager, "init", null);
 	}
 
 	@Test
@@ -172,7 +180,7 @@ public class DocumentFrameTest {
 
 	@Test
 	public void testCloseAllDocuments() {
-		manager.closeAllDocument();
+		manager.closeAllDocuments();
 	}
 
 	@Test
@@ -187,7 +195,7 @@ public class DocumentFrameTest {
 
 	@Test
 	public void testGetParent() {
-		JWP words = manager.getParent();
+		JWP words = (JWP) invokePrivateMethod(manager, "getParent", null);
 	}
 
 
@@ -211,7 +219,7 @@ public class DocumentFrameTest {
 				constructor.setAccessible(true);
 
 				try {
-					inner = constructor.newInstance(new Object[] { cps });
+					inner = constructor.newInstance(new Object[] { manager });
 				} catch (Exception e) {
 					throw new RuntimeException("Could not instantiate inner class '"
 							+ innerClassName + "'", e);

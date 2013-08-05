@@ -6,11 +6,15 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.io.File;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 import javax.swing.JMenuBar;
 import javax.swing.JToolBar;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.jmonkey.export.RegistryFormatException;
@@ -26,12 +30,15 @@ public class JWPTest {
 	public static final int HORIZONTAL = 0;
 
 	public static JWP jwp;
+	
+	@Before
+	public void setup() throws RegistryFormatException {
+		jwp = new JWP(null);
+	}
 
 	@Test
-	public void testGetDesktop() throws RegistryFormatException {
+	public void testGetDesktop() {
 		MainDesktop desktop = null;
-
-		jwp = new JWP(null);
 
 		desktop = jwp.getDesktop();
 
@@ -40,9 +47,7 @@ public class JWPTest {
 
 	@Test
 	public void testGetResources() {
-		ResouceBundle bundle = null;
-
-		jwp = new JWP(null);
+		ResourceBundle bundle = null;
 
 		bundle = jwp.getResources();
 
@@ -53,9 +58,7 @@ public class JWPTest {
 	public void testScrollableViewportSize() {
 		Dimension dim = new Dimension();
 
-		jwp = new JWP(null);
-
-		dim = jwp.getPreferredScrollableViewportSize();
+		dim = ((MainDesktop) instantiatePrivateClass(jwp, "MainDesktop")).getPreferredScrollableViewportSize();
 
 		assertTrue(dim instanceof Dimension);
 		assertFalse(dim == null);
@@ -66,10 +69,8 @@ public class JWPTest {
 		int hori, vert;
 		Rectangle rect = new Rectangle(10, 10, 0, 0);
 
-		jwp = new JWP(null);
-
-		hori = jwp.getScrollableUnitIncrement(rect, HORIZONTAL, 0);
-		vert = jwp.getScrollableUnitIncrement(rect, VERTICAL, 0);
+		hori = ((MainDesktop) instantiatePrivateClass(jwp, "MainDesktop")).getScrollableUnitIncrement(rect, HORIZONTAL, 0);
+		vert = ((MainDesktop) instantiatePrivateClass(jwp, "MainDesktop")).getScrollableUnitIncrement(rect, VERTICAL, 0);
 
 		assertTrue(hori == 1);
 		assertTrue(vert == 1);
@@ -80,10 +81,8 @@ public class JWPTest {
 		int height, width;
 		Rectangle rect = new Rectangle(10, 10, 0, 0);
 
-		jwp = new JWP(null);
-
-		width = jwp.getScrollableBlockIncrement(rect, HORIZONTAL, 0);
-		height = jwp.getScrollableBlockIncrement(rect, VERTICAL, 0);
+		width = ((MainDesktop) instantiatePrivateClass(jwp, "MainDesktop")).getScrollableBlockIncrement(rect, HORIZONTAL, 0);
+		height = ((MainDesktop) instantiatePrivateClass(jwp, "MainDesktop")).getScrollableBlockIncrement(rect, VERTICAL, 0);
 
 		assertTrue(width == 10);
 		assertTrue(height == 10);
@@ -91,38 +90,30 @@ public class JWPTest {
 
 	@Test
 	public void testScrollableTrackingWidth() {
-		jwp = new JWP(null);
-
-		assertFalse(jwp.getScrollableTrackingViewportWidth());
+		assertFalse(((MainDesktop) instantiatePrivateClass(jwp, "MainDesktop")).getScrollableTracksViewportWidth());
 	}
 
 	@Test
 	public void testScrollableTrackingHeight() {
-		jwp = new JWP(null);
-
-		assertFalse(jwp.getScrollableTrackingViewportHeight());
+		assertFalse(((MainDesktop) instantiatePrivateClass(jwp, "MainDesktop")).getScrollableTracksViewportHeight());
 	}
 
 
 	//Note to self ask how to make a class in a class
+	/* Wierd Triple class case?
 	@Test
 	public void testIconWidth() {
-		jwp = new JWP(null);
-
 		assertEqual(jwp.getIconWidth(), 16);
 	}
 
 	@Test
 	public void testIconHeight() {
-		jwp = new JWP(null);
-
 		assertEqual(jwp.getIconHeight(), 16);
 	}
-
+	*/
+	
 	@Test
 	public void testAddToFileHistory() throws RegistryFormatException {
-		jwp = new JWP(null);
-
 		jwp.addToFileHistory(new File(HISTORY_FILE));
 
 		assertTrue(jwp.m_fileHistory.getItemCount() == 1);
@@ -133,28 +124,22 @@ public class JWPTest {
 	public void testCreateMenuBar() {
 		JMenuBar menu = new JMenuBar();
 
-		jwp = new JWP(null);
-
-		menu = jwp.createMenuBar();
+		menu = (JMenuBar) invokePrivateMethod(jwp, "createMenuBar", null);
 
 		assertTrue(menu instanceof JMenuBar);
 		assertFalse(menu == null);
 	}
 
 	@Test
-	public void testExit() throws RegistryFormatException {
-		jwp = new JWP(null);
-
+	public void testExit() {
 		jwp.doExit();
 
 		assertTrue(jwp == null);
 	}
 
 	@Test
-	public void testEditorActionManager() throws RegistryFormatException {
+	public void testEditorActionManager() {
 		EditorActionManager eam = new EditorActionManager(null, null);
-
-		jwp = new JWP(null);
 
 		eam = jwp.getEditorActionManager();
 
@@ -163,10 +148,8 @@ public class JWPTest {
 	}
 
 	@Test
-	public void testGetCommandToolbar() throws RegistryFormatException {
+	public void testGetCommandToolbar() {
 		JToolBar toolbar = new JToolBar();
-
-		jwp = new JWP(null);
 
 		toolbar = jwp.getFileToolBar();
 
@@ -175,10 +158,8 @@ public class JWPTest {
 	}
 
 	@Test
-	public void testGetFormatToolbar() throws RegistryFormatException {
+	public void testGetFormatToolbar() {
 		JToolBar toolbar = new JToolBar();
-
-		jwp = new JWP(null);
 
 		toolbar = jwp.getFormatToolBar();
 
@@ -187,9 +168,7 @@ public class JWPTest {
 	}
 
 	@Test
-	public void testGetFontSizes() throws RegistryFormatException {
-		jwp = new JWP(null);
-
+	public void testGetFontSizes() {
 		int[] sizes;
 
 		sizes = jwp.getFontSizes();
@@ -217,7 +196,7 @@ public class JWPTest {
 				constructor.setAccessible(true);
 
 				try {
-					inner = constructor.newInstance(new Object[] { cps });
+					inner = constructor.newInstance(new Object[] { jwp });
 				} catch (Exception e) {
 					throw new RuntimeException("Could not instantiate inner class '"
 							+ innerClassName + "'", e);

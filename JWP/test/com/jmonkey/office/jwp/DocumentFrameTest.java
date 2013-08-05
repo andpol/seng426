@@ -5,11 +5,22 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.event.FocusEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyVetoException;
+
+import javax.swing.event.InternalFrameEvent;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.Properties;
+
 import com.jmonkey.export.RegistryFormatException;
+import com.jmonkey.office.jwp.support.Editor;
 
 public class DocumentFrameTest {
 
@@ -47,15 +58,15 @@ public class DocumentFrameTest {
 		InternalFrameEvent ife = new InternalFrameEvent(frame, 25555);
 		FocusEvent fe = new FocusEvent(frame, 1004);
 
-		internalFrameOpened(ife);
-		internalFrameClosing(ife);
-		internalFrameClosed(ife);
-		internalFrameIconified(ife);
-		internalFrameDeiconified(ife);
-		internalFrameActivated(ife);
-		internalFrameDeactivated(ife);
-		focusGained(fe);
-		focusLost(fe);
+		frame.internalFrameOpened(ife);
+		frame.internalFrameClosing(ife);
+		frame.internalFrameClosed(ife);
+		frame.internalFrameIconified(ife);
+		frame.internalFrameDeiconified(ife);
+		frame.internalFrameActivated(ife);
+		frame.internalFrameDeactivated(ife);
+		frame.focusGained(fe);
+		frame.focusLost(fe);
 	}
 
 	private static Object invokePrivateMethod(Object object, String methodName, Object[] args) {
@@ -77,7 +88,7 @@ public class DocumentFrameTest {
 				constructor.setAccessible(true);
 
 				try {
-					inner = constructor.newInstance(new Object[] { cps });
+					inner = constructor.newInstance(new Object[] { frame });
 				} catch (Exception e) {
 					throw new RuntimeException("Could not instantiate inner class '"
 							+ innerClassName + "'", e);
