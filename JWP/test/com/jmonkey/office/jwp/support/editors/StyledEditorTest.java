@@ -90,7 +90,7 @@ public class StyledEditorTest {
 
 		@Override
 		public String getContentType() {
-			return null;
+			return "text/plain";
 		}
 
 	}

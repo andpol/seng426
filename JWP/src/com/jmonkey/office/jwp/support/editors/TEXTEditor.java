@@ -164,7 +164,7 @@ public final class TEXTEditor extends Editor implements MouseListener, KeyListen
 	}
 
 	public final String getContentType() {
-		return m_editor.getContentType();
+		return CONTENT_TYPE;
 	}
 
 	public Element getCurrentParagraph() {
