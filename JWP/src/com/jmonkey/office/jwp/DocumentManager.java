@@ -308,7 +308,7 @@ public final class DocumentManager extends DefaultDesktopManager implements Desk
 		cd.activate();
 		p.updateOpenWindowsMenu();
 		if (file != null) {
-			if (file.exists() & file.isFile()) {
+			if (file.exists() && file.isFile()) {
 				editorOpen(file);
 			}
 		}
@@ -510,8 +510,8 @@ public final class DocumentManager extends DefaultDesktopManager implements Desk
 	protected final void closeAllDocuments() {
 		Component[] comps = JWP.getDesktop().getComponents();
 		for (int i = 0; i < comps.length; i++) {
-			if (comps[i] instanceof DocumentFrame & comps[i].isVisible()
-					& ((JInternalFrame) comps[i]).isClosable()) {
+			if (comps[i] instanceof DocumentFrame && comps[i].isVisible()
+					&& ((JInternalFrame) comps[i]).isClosable()) {
 
 				DocumentFrame actOnDoc = ((DocumentFrame) comps[i]);
 				actOnDoc.activate();

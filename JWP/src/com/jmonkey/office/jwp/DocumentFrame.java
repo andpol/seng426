@@ -58,7 +58,7 @@ public final class DocumentFrame extends JInternalFrame implements InternalFrame
 	public void vetoableChange(PropertyChangeEvent evt) throws PropertyVetoException {
 		Code.event(evt);
 
-		if (evt.getPropertyName().equals("closed") & ((Boolean) evt.getNewValue()).booleanValue()) {
+		if (evt.getPropertyName().equals("closed") && ((Boolean) evt.getNewValue()).booleanValue()) {
 			if (!m_app.getDesktopManager().closeActiveDocument()) {
 				Code.debug("vetoed close");
 				throw new PropertyVetoException("closed", evt);

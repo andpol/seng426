@@ -142,7 +142,7 @@ public final class ColourPropertySheet extends JDialog {
 				boolean isSelected, boolean hasFocus, int row, int column) {
 			setValue(value);
 
-			if (!isSelected & column == 1) {
+			if (!isSelected && column == 1) {
 				try {
 					Color c = Format.hexToColor((String) value);
 					setBackground(c);
