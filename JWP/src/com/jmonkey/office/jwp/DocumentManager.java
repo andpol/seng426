@@ -433,7 +433,6 @@ public final class DocumentManager extends DefaultDesktopManager implements Desk
 
 	protected final void cascadeAll() {
 		Component[] comps = JWP.getDesktop().getComponents();
-		System.out.println(comps);
 		Dimension dsize = JWP.getDesktop().getSize();
 		int targetWidth = 3 * dsize.width / 4;
 		int targetHeight = 3 * dsize.height / 4;
