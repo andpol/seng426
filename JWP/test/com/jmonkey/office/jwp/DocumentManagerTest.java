@@ -253,7 +253,7 @@ public class DocumentManagerTest {
 		
 		String[] contents = {"banana", "apple"};
         this.createFile("dmtests/saveAs.txt", contents);
-        File testFile = new File("dmtests/save.txt");
+        File testFile = new File("dmtests/saveAs.txt");
         assertTrue(testFile.exists());
         try {
             saveChooser oc = new saveChooser(this.manager, df.getEditor()); 
@@ -389,6 +389,7 @@ public class DocumentManagerTest {
 		for(int i = 0; i<5; i++) {
 			manager.editorNew();
 		}
+		
 		manager.cascadeAll();
 	}
 	
