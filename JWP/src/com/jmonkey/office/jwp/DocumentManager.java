@@ -433,14 +433,15 @@ public final class DocumentManager extends DefaultDesktopManager implements Desk
 
 	protected final void cascadeAll() {
 		Component[] comps = JWP.getDesktop().getComponents();
+		System.out.println(comps);
 		Dimension dsize = JWP.getDesktop().getSize();
 		int targetWidth = 3 * dsize.width / 4;
 		int targetHeight = 3 * dsize.height / 4;
 		int nextX = 0;
 		int nextY = 0;
 		for (int i = 0; i < comps.length; i++) {
-			if (comps[i] instanceof JInternalFrame & comps[i].isVisible()
-					& !((JInternalFrame) comps[i]).isIcon()) {
+			if (comps[i] instanceof JInternalFrame && comps[i].isVisible()
+					&& !((JInternalFrame) comps[i]).isIcon()) {
 				if ((nextX + targetWidth > dsize.width) || (nextY + targetHeight > dsize.height)) {
 					nextX = 0;
 					nextY = 0;
