@@ -75,6 +75,8 @@ public class JWP extends JFrame implements ActionListener {
 	private static JToolBar ftb = null;
 	private static int count = 0;
 
+	private static final int DEFAULT_FONT_SIZE = 12;
+
 	private EditorActionManager eam = null;
 
 	static MainDesktop getDesktop() {
@@ -315,7 +317,7 @@ public class JWP extends JFrame implements ActionListener {
 				boolean isSelected, boolean cellHasFocus) {
 			if (value != null) {
 				setMinimumSize(new Dimension(0, 16));
-				Font thisFont = new Font((String) value, Font.PLAIN, 12);
+				Font thisFont = new Font((String) value, Font.PLAIN, DEFAULT_FONT_SIZE);
 				Code.debug("Font PostScript Name: " + thisFont.getPSName());
 				setFont(thisFont);
 				setText((String) value);
@@ -756,7 +758,11 @@ public class JWP extends JFrame implements ActionListener {
 			int[] fontSizes = getFontSizes();
 			for (int i = 0; i < fontSizes.length; i++) {
 				fsizes.addItem(eam.getFontSizeAction(fontSizes[i]));
+				if (fontSizes[i] == DEFAULT_FONT_SIZE) {
+					fsizes.setSelectedIndex(i);
+				}
 			}
+
 			ActionToolBar ftb = (ActionToolBar) this.ftb;
 			ftb.add(colours);
 			ftb.add(fonts);

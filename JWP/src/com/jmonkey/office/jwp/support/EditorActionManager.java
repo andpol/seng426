@@ -231,6 +231,7 @@ public class EditorActionManager extends ActionManager {
 				if (size != 0) {
 					MutableAttributeSet attr = editor.getSimpleAttributeSet();
 					StyleConstants.setFontSize(attr, size);
+					setCharacterAttributes(editor.getTextComponent(), attr, false);
 				} else {
 					Toolkit.getDefaultToolkit().beep();
 				}
