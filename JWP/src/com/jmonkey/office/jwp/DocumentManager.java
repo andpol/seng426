@@ -487,7 +487,6 @@ public final class DocumentManager extends DefaultDesktopManager implements Desk
 				close = ed.isWriting();
 				break;
 			case JOptionPane.NO_OPTION:
-				System.out.println("here");
 				close = true;
 				break;
 			default:
@@ -496,8 +495,6 @@ public final class DocumentManager extends DefaultDesktopManager implements Desk
 		} else {
 			close = true;
 		}
-		System.out.println("changd: " + ed.isChanged());
-		System.out.println("closed: " + close);
 		active().firePropertyChange("closed", false, close);
 		return close;
 	}
