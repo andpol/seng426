@@ -824,7 +824,8 @@ public class JWP extends JFrame implements ActionListener {
 		if (m_mainRegistry == null) {
 			try {
 				Registry reg = Registry.loadForClass(JWP.class, rv);
-
+				reg.deleteAll();
+				
 				if (reg.sizeOf("USER") == 0) {
 					reg.initGroup("USER", new String[][] {
 							{ "open.blank.default", "true", "boolean" },

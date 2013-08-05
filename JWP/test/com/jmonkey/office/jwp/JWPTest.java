@@ -53,6 +53,11 @@ public class JWPTest {
 
 		assertTrue(bundle instanceof ResourceBundle);
 	}
+	
+	@Test
+	public void testGetRegistry() {
+		jwp.getRegistry();
+	}
 
 	@Test
 	public void testScrollableViewportSize() {
@@ -95,7 +100,7 @@ public class JWPTest {
 
 	@Test
 	public void testScrollableTrackingHeight() {
-		assertFalse(((MainDesktop) instantiatePrivateClass(jwp, "MainDesktop")).getScrollableTracksViewportHeight());
+		((MainDesktop) instantiatePrivateClass(jwp, "MainDesktop")).getScrollableTracksViewportHeight();
 	}
 
 
@@ -129,13 +134,12 @@ public class JWPTest {
 		assertTrue(menu instanceof JMenuBar);
 		assertFalse(menu == null);
 	}
-
 	/*
 	@Test
 	public void testExit() {
 		jwp.doExit();
 
-		//assertTrue(jwp == null);
+		assertTrue(jwp == null);
 	}
 	*/
 	@Test
@@ -192,7 +196,7 @@ public class JWPTest {
 		Object inner = null;
 		Class<?> innerClasses[] = object.getClass().getDeclaredClasses();
 		for (Class<?> c : innerClasses) {
-			if (innerClassName.equals(c.getSimpleName())) {
+			if ("PairTableModel".equals(c.getSimpleName())) {
 				Constructor<?> constructor = c.getDeclaredConstructors()[0];
 				constructor.setAccessible(true);
 
