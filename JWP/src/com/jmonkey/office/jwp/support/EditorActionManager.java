@@ -85,6 +85,7 @@ public class EditorActionManager extends ActionManager {
 
 	private Map m_actions = Collections.synchronizedMap(new HashMap());
 
+	@SuppressWarnings("unchecked")
 	public EditorActionManager(JFrame app, FileActionListener agent) {
 
 		m_actions.put(A_C_A_P, new AlignmentAction(A_C_A_P, StyleConstants.ALIGN_CENTER));
@@ -103,12 +104,12 @@ public class EditorActionManager extends ActionManager {
 		m_actions.put(F_OP_A_P, new OpenAsAction(F_OP_A_P, app, agent));
 		m_actions.put(P_A_P, new PasteAction());
 		m_actions.put(RDO_A_P, new RedoAction());
-		m_actions.put(REP_A_P, new FontChooserAction(REP_A_P, app));
+		m_actions.put(REP_A_P, new ReplaceAction(REP_A_P, app));
 		m_actions.put(F_R_A_P, new RevertAction(F_R_A_P, app, agent));
 		m_actions.put(F_S_A_P, new SaveAction(F_S_A_P, app, agent));
 		m_actions.put(F_SA_A_P, new SaveAsAction(F_SA_A_P, app, agent));
 		m_actions.put(F_SC_A_P, new SaveCopyAction(F_SC_A_P, app, agent));
-		m_actions.put(SEA_A_P, new FontChooserAction(SEA_A_P, app));
+		m_actions.put(SEA_A_P, new SearchAction(SEA_A_P, app));
 		m_actions.put(SEL_A_P, new SelectAllAction());
 		m_actions.put(SEL_N_A_P, new SelectNoneAction());
 		m_actions.put(STR_A_P, new StrikeThroughAction());
