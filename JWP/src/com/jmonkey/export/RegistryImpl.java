@@ -459,12 +459,7 @@ final class RegistryImpl extends Registry implements Serializable {
 			return Registry.TYPE_NONE;
 		}
 
-		String value = ((RegistryGroup) m_groups.get(group)).getProperty(key);
-		if (value == null) {
-			return Registry.TYPE_NONE;
-		} else {
-			return markerToType(value.substring(0, 3));
-		}
+		return ((RegistryGroup) m_groups.get(group)).getPropertyType(key);
 	}
 
 	/**
