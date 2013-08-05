@@ -122,12 +122,12 @@ public class TEXTEditorTest {
 	 * Test that the editor in the "new" state has the correct state
 	 */
 	@Test
-	public void testEditorHasBeenActivated1() {
+	public void testEditorPostActivate1() {
 		Action revert = mgr.getActionByKey(EditorActionManager.F_R_A_P);
 		Action save = mgr.getActionByKey(EditorActionManager.F_S_A_P);
 
 		editor.setFile(new File("some_text_file_that_does_not_exist.txt"));
-		editor.hasBeenActivated(editor);
+		editor.postActivate();
 
 		assertEquals(false, revert.isEnabled());
 		assertEquals(true, save.isEnabled());
@@ -138,11 +138,11 @@ public class TEXTEditorTest {
 	 * not have a file set.
 	 */
 	@Test
-	public void testEditorHasBeenActivated2() {
+	public void testEditorPostActivate2() {
 		Action revert = mgr.getActionByKey(EditorActionManager.F_R_A_P);
 		Action save = mgr.getActionByKey(EditorActionManager.F_S_A_P);
 
-		editor.hasBeenActivated(editor);
+		editor.postActivate();
 
 		assertEquals(false, revert.isEnabled());
 		assertEquals(true, save.isEnabled());
@@ -152,13 +152,13 @@ public class TEXTEditorTest {
 	 * Test that the editor in the "changed" state has the correct state
 	 */
 	@Test
-	public void testEditorHasBeenActivated3() {
+	public void testEditorPostActivate3() {
 		Action revert = mgr.getActionByKey(EditorActionManager.F_R_A_P);
 		Action save = mgr.getActionByKey(EditorActionManager.F_S_A_P);
 
 		editor.setFile(sampleFile); // File that exists
 		editor.setChanged(true);
-		editor.hasBeenActivated(editor);
+		editor.postActivate();
 
 		assertEquals(true, revert.isEnabled());
 		assertEquals(true, save.isEnabled());
@@ -168,31 +168,21 @@ public class TEXTEditorTest {
 	 * Test that the editor NOT in the "changed" state has the correct state
 	 */
 	@Test
-	public void testEditorHasBeenActivated4() {
+	public void testEditorPostActivate4() {
 		Action revert = mgr.getActionByKey(EditorActionManager.F_R_A_P);
 		Action save = mgr.getActionByKey(EditorActionManager.F_S_A_P);
 
 		editor.setFile(sampleFile); // File that exists
 		editor.setChanged(false);
-		editor.hasBeenActivated(editor);
+		editor.postActivate();
 
 		assertEquals(true, revert.isEnabled());
 		assertEquals(false, save.isEnabled());
 	}
 
 	@Test
-	public void testEditorHasBeenActivated5() {
-		editor.hasBeenDeactivated(null);
-	}
-
-	@Test
-	public void testEditorHasBeenDeactivated1() {
-		editor.hasBeenDeactivated(editor);
-	}
-
-	@Test
-	public void testEditorHasBeenDeactivated2() {
-		editor.hasBeenDeactivated(null);
+	public void testEditorPostDeactivate() {
+		editor.postDeactivate();
 	}
 
 	@Test

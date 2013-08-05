@@ -136,7 +136,7 @@ public class StyledEditorTest {
 		Action save = mgr.getActionByKey(EditorActionManager.F_S_A_P);
 
 		editor.setFile(new File("some_text_file_that_does_not_exist.txt"));
-		editor.hasBeenActivated(editor);
+		editor.postActivate();
 
 		assertEquals(false, revert.isEnabled());
 		assertEquals(true, save.isEnabled());
@@ -151,7 +151,7 @@ public class StyledEditorTest {
 		Action revert = mgr.getActionByKey(EditorActionManager.F_R_A_P);
 		Action save = mgr.getActionByKey(EditorActionManager.F_S_A_P);
 
-		editor.hasBeenActivated(editor);
+		editor.postActivate();
 
 		assertEquals(false, revert.isEnabled());
 		assertEquals(true, save.isEnabled());
@@ -167,7 +167,7 @@ public class StyledEditorTest {
 
 		editor.setFile(sampleFile); // File that exists
 		editor.setChanged(true);
-		editor.hasBeenActivated(editor);
+		editor.postActivate();
 
 		assertEquals(true, revert.isEnabled());
 		assertEquals(true, save.isEnabled());
@@ -183,25 +183,15 @@ public class StyledEditorTest {
 
 		editor.setFile(sampleFile); // File that exists
 		editor.setChanged(false);
-		editor.hasBeenActivated(editor);
+		editor.postActivate();
 
 		assertEquals(true, revert.isEnabled());
 		assertEquals(false, save.isEnabled());
 	}
 
 	@Test
-	public void testEditorHasBeenActivated5() {
-		editor.hasBeenDeactivated(null);
-	}
-
-	@Test
-	public void testEditorHasBeenDeactivated1() {
-		editor.hasBeenDeactivated(editor);
-	}
-
-	@Test
-	public void testEditorHasBeenDeactivated2() {
-		editor.hasBeenDeactivated(null);
+	public void testEditorHasBeenDeactivated() {
+		editor.postDeactivate();
 	}
 
 	@Test

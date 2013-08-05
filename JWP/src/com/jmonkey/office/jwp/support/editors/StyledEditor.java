@@ -62,9 +62,8 @@ public abstract class StyledEditor extends Editor implements MouseListener, KeyL
 	/**
 	 * Document Event manager
 	 */
-	protected final class EventListener extends Object implements DocumentListener,
-			UndoableEditListener, HyperlinkListener, FocusListener, VetoableChangeListener,
-			ChangeListener {
+	protected final class EventListener extends Object implements DocumentListener, UndoableEditListener, HyperlinkListener, FocusListener,
+			VetoableChangeListener, ChangeListener {
 		private StyledEditor m_parent = null;
 
 		protected EventListener(StyledEditor parent) {
@@ -147,10 +146,8 @@ public abstract class StyledEditor extends Editor implements MouseListener, KeyL
 
 	public void documentSetSelection(int start, int length, boolean wordsOnly) {
 		try {
-			m_editor.getCaret().setDot(
-					(wordsOnly ? Utilities.getWordStart(m_editor, start) : start));
-			m_editor.getCaret().moveDot(
-					(wordsOnly ? Utilities.getWordEnd(m_editor, length) : length));
+			m_editor.getCaret().setDot((wordsOnly ? Utilities.getWordStart(m_editor, start) : start));
+			m_editor.getCaret().moveDot((wordsOnly ? Utilities.getWordEnd(m_editor, length) : length));
 		} catch (BadLocationException ble0) {
 		}
 	}
@@ -185,43 +182,39 @@ public abstract class StyledEditor extends Editor implements MouseListener, KeyL
 		return m_editor;
 	}
 
-	public void hasBeenActivated(Editor editor) {
-		if (editor == this) {
-			Code.debug("hasBeenActivated");
-			EditorActionManager eam = getEditorActionManager();
-			eam.enableFormatActions(true);
-			eam.enableGenericActions(true);
-			eam.enableDocumentActions(true);
+	public void postActivate() {
+		Code.debug("hasBeenActivated");
+		EditorActionManager eam = getEditorActionManager();
+		eam.enableFormatActions(true);
+		eam.enableGenericActions(true);
+		eam.enableDocumentActions(true);
 
-			if (hasFile()) {
-				if (isNew()) {
-					eam.enableAction(EditorActionManager.F_R_A_P, false);
+		if (hasFile()) {
+			if (isNew()) {
+				eam.enableAction(EditorActionManager.F_R_A_P, false);
+				eam.enableAction(EditorActionManager.F_S_A_P, true);
+			} else {
+				if (isChanged()) {
+					eam.enableAction(EditorActionManager.F_R_A_P, true);
 					eam.enableAction(EditorActionManager.F_S_A_P, true);
 				} else {
-					if (isChanged()) {
-						eam.enableAction(EditorActionManager.F_R_A_P, true);
-						eam.enableAction(EditorActionManager.F_S_A_P, true);
-					} else {
-						eam.enableAction(EditorActionManager.F_R_A_P, true);
-						eam.enableAction(EditorActionManager.F_S_A_P, false);
-					}
+					eam.enableAction(EditorActionManager.F_R_A_P, true);
+					eam.enableAction(EditorActionManager.F_S_A_P, false);
 				}
-			} else {
-				eam.enableAction(EditorActionManager.F_S_A_P, true);
-				eam.enableAction(EditorActionManager.F_R_A_P, false);
 			}
-			// Enable/disable redo
-			eam.enableAction(EditorActionManager.RDO_A_P, getUndoManager().canRedo());
-			// Enable/disable undo
-			eam.enableAction(EditorActionManager.UDO_A_AP, getUndoManager().canUndo());
+		} else {
+			eam.enableAction(EditorActionManager.F_S_A_P, true);
+			eam.enableAction(EditorActionManager.F_R_A_P, false);
 		}
+		// Enable/disable redo
+		eam.enableAction(EditorActionManager.RDO_A_P, getUndoManager().canRedo());
+		// Enable/disable undo
+		eam.enableAction(EditorActionManager.UDO_A_AP, getUndoManager().canUndo());
 	}
 
-	public void hasBeenDeactivated(Editor editor) {
-		if (editor == this) {
-			Code.debug("hasBeenDeactivated");
-			// ActionManager.enableFormatActions(false);
-		}
+	public void postDeactivate() {
+		Code.debug("hasBeenDeactivated");
+		// ActionManager.enableFormatActions(false);
 	}
 
 	public void init() {
@@ -386,7 +379,7 @@ public abstract class StyledEditor extends Editor implements MouseListener, KeyL
 	 */
 	public final void setChanged(boolean changed) {
 		m_changed = changed;
-		hasBeenActivated(this);
+		postActivate();
 	}
 
 	public void setCurrentParagraph(Element paragraph) {

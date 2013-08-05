@@ -215,9 +215,9 @@ public abstract class Editor extends JPanel {
 		return m_undoManager;
 	}
 
-	public abstract void hasBeenActivated(Editor editor);
+	public abstract void postActivate();
 
-	public abstract void hasBeenDeactivated(Editor editor);
+	public abstract void postDeactivate();
 
 	public final boolean hasFile() {
 		return (m_file != null);

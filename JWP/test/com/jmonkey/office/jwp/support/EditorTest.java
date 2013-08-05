@@ -224,12 +224,12 @@ public class EditorTest {
 		}
 
 		@Override
-		public void hasBeenActivated(Editor editor) {
+		public void postActivate() {
 			// NOP
 		}
 
 		@Override
-		public void hasBeenDeactivated(Editor editor) {
+		public void postDeactivate() {
 			// NOP
 		}
 

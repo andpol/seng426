@@ -669,7 +669,7 @@ public class EditorActionManager extends ActionManager {
 		}
 
 		EditorActionManager.s_editor = editor;
-		editor.hasBeenActivated(editor);
+		editor.postActivate();
 
 		editor.getTextComponent().addCaretListener(
 				editor.getEditorActionManager().m_attributeTracker);
@@ -764,7 +764,7 @@ public class EditorActionManager extends ActionManager {
 			currentEditor.getTextComponent().removeCaretListener(m_attributeTracker);
 			// Before the editor is removed so that any calls to
 			// EditorActionManager.getActiveEditor() will return something.
-			currentEditor.hasBeenDeactivated(EditorActionManager.getActiveEditor());
+			currentEditor.postDeactivate();
 			EditorActionManager.s_editor = null;
 		}
 	}
