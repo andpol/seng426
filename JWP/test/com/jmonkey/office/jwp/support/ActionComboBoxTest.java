@@ -1,21 +1,18 @@
 package com.jmonkey.office.jwp.support;
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import javax.swing.Action;
-
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.jmonkey.office.jwp.support.editors.HTMLEditor;
-
+import com.jmonkey.office.jwp.support.editors.Editor;
 
 public class ActionComboBoxTest {
-	
-	
-	
 	private EditorActionManager ea;
 	private Editor editor;
 	private Action action1;

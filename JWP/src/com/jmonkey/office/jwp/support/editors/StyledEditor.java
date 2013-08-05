@@ -39,7 +39,6 @@ import javax.swing.text.StyledDocument;
 import javax.swing.text.StyledEditorKit;
 import javax.swing.text.Utilities;
 
-import com.jmonkey.office.jwp.support.Editor;
 import com.jmonkey.office.jwp.support.Code;
 import com.jmonkey.office.jwp.support.EditorActionManager;
 

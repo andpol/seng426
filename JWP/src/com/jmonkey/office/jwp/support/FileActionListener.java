@@ -1,5 +1,7 @@
 package com.jmonkey.office.jwp.support;
 
+import com.jmonkey.office.jwp.support.editors.Editor;
+
 public interface FileActionListener {
 	public void editorNew();
 

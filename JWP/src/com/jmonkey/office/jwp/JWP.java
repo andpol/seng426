@@ -52,9 +52,9 @@ import com.jmonkey.office.help.OfficeHelp;
 import com.jmonkey.office.jwp.support.ActionComboBox;
 import com.jmonkey.office.jwp.support.ActionToolBar;
 import com.jmonkey.office.jwp.support.Code;
-import com.jmonkey.office.jwp.support.Editor;
 import com.jmonkey.office.jwp.support.EditorActionManager;
 import com.jmonkey.office.jwp.support.PropertySheetDialog;
+import com.jmonkey.office.jwp.support.editors.Editor;
 import com.jmonkey.office.jwp.support.images.Loader;
 
 /**

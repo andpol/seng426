@@ -12,7 +12,7 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
 import com.jmonkey.office.jwp.support.Code;
-import com.jmonkey.office.jwp.support.Editor;
+import com.jmonkey.office.jwp.support.editors.Editor;
 import com.jmonkey.office.jwp.support.images.Loader;
 
 /**

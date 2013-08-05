@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 import java.util.Properties;
 
 import com.jmonkey.export.RegistryFormatException;
-import com.jmonkey.office.jwp.support.Editor;
+import com.jmonkey.office.jwp.support.editors.Editor;
 
 public class DocumentFrameTest {
 

@@ -31,6 +31,7 @@ import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import com.jmonkey.office.jwp.support.editors.Editor;
 import com.jmonkey.office.jwp.support.images.Loader;
 
 public class EditorActionManager extends ActionManager {

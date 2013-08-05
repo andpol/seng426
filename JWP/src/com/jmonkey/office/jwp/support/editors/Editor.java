@@ -1,4 +1,4 @@
-package com.jmonkey.office.jwp.support;
+package com.jmonkey.office.jwp.support.editors;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,9 +19,8 @@ import javax.swing.undo.UndoManager;
 
 import com.jmonkey.export.Registry;
 import com.jmonkey.office.jwp.JWP;
-import com.jmonkey.office.jwp.support.editors.HTMLEditor;
-import com.jmonkey.office.jwp.support.editors.RTFEditor;
-import com.jmonkey.office.jwp.support.editors.TEXTEditor;
+import com.jmonkey.office.jwp.support.Code;
+import com.jmonkey.office.jwp.support.EditorActionManager;
 
 /**
  * Base Editor class for all editors.

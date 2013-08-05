@@ -1,4 +1,4 @@
-package com.jmonkey.office.jwp.support;
+package com.jmonkey.office.jwp.support.editors;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
@@ -20,6 +20,8 @@ import org.junit.Test;
 import com.jmonkey.export.Registry;
 import com.jmonkey.export.RegistryFormatException;
 import com.jmonkey.office.jwp.JWP;
+import com.jmonkey.office.jwp.support.EditorActionManager;
+import com.jmonkey.office.jwp.support.editors.Editor;
 import com.jmonkey.office.jwp.support.editors.HTMLEditor;
 import com.jmonkey.office.jwp.support.editors.RTFEditor;
 import com.jmonkey.office.jwp.support.editors.TEXTEditor;

@@ -21,9 +21,9 @@ import com.jmonkey.export.Registry;
 import com.jmonkey.export.Runtime;
 import com.jmonkey.office.jwp.DynamicFileFilter;
 import com.jmonkey.office.jwp.support.Code;
-import com.jmonkey.office.jwp.support.Editor;
 import com.jmonkey.office.jwp.support.FileActionListener;
 import com.jmonkey.office.jwp.support.Mime;
+import com.jmonkey.office.jwp.support.editors.Editor;
 
 /**
  * This class manages the active document frames in the JWP application.

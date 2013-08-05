@@ -24,6 +24,7 @@ import com.jmonkey.export.RegistryFormatException;
 import com.jmonkey.office.jwp.DocumentManager;
 import com.jmonkey.office.jwp.JWP;
 import com.jmonkey.office.jwp.support.EditorActionManager.*;
+import com.jmonkey.office.jwp.support.editors.Editor;
 import com.jmonkey.office.jwp.support.editors.HTMLEditor;
 
 public class EditorActionManagerTest {

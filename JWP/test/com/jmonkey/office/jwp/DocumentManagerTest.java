@@ -29,7 +29,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.jmonkey.export.RegistryFormatException;
-import com.jmonkey.office.jwp.support.Editor;
+import com.jmonkey.office.jwp.support.editors.Editor;
 
 public class DocumentManagerTest {
 
