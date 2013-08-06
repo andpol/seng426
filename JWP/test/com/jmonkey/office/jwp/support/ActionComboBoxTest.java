@@ -43,26 +43,6 @@ public class ActionComboBoxTest {
 		Action first =  (Action)box.getItemAt(0);
 		assertEquals(action1,first);
 	}
-	
-	@Test
-	public void testRemoveItem()
-	{
-		ActionComboBox box = new ActionComboBox();
-		box.addItem(action1);
-		box.removeItem(action1);
-		Action tmpaction = (Action)box.getItemAt(0);
-		assertNull(tmpaction);
-	}
-	@Test
-	public void testRemoveItemAt()
-	{
-		ActionComboBox box = new ActionComboBox();
-		box.addItem(action1);
-		box.removeItemAt(0);
-		Action tmpaction = (Action)box.getItemAt(0);
-		assertNull(tmpaction);
-	}
-	
 	@Test
 	public void testInsertItemAt()
 	{

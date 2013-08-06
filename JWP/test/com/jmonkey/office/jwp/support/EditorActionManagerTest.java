@@ -83,16 +83,6 @@ methodName + "'", e);
 	
 	
 	@Test
-	public void testFontChooserActionConstructor(){
-		action1 = ea.getFontChooserAction();
-		//System.out.println(action1);
-		ActionComboBox box = new ActionComboBox();
-		box.addItem(action1);
-		assertNotNull(action1);
-	
-	}
-	
-	@Test
 	public void testFontFacectionconstructor(){
 		action1 = ea.getFontFaceAction("Arial");
 		ActionComboBox box = new ActionComboBox();
@@ -183,55 +173,7 @@ methodName + "'", e);
 		box.addItem(action1);
 		assertNotNull(action1);
 	}
-	
-	@Test
-	public void testNewActionConstructor(){
-		action1 = ea.getNewAction();
-		ActionComboBox box = new ActionComboBox();
-		box.addItem(action1);
-		assertNotNull(action1);
-		
-	}
-	
-	@Test
-	public void testOpenActionConstructor(){
-		action1 = ea.getOpenAction();
-		ActionComboBox box = new ActionComboBox();
-		box.addItem(action1);
-		assertNotNull(action1);
-	}
-	
-	@Test
-	public void testOpenAsActionConstructor(){
-		action1 = ea.getOpenAsAction();
-		ActionComboBox box = new ActionComboBox();
-		box.addItem(action1);
-		assertNotNull(action1);
-	}
-	
-	@Test
-	public void testRevertActionConstructor(){
-		action1 = ea.getRevertAction();
-		ActionComboBox box = new ActionComboBox();
-		box.addItem(action1);
-		assertNotNull(action1);
-	}
-	
-	@Test
-	public void testSaveActionConstructor(){
-		action1 = ea.getSaveAction();
-		ActionComboBox box = new ActionComboBox();
-		box.addItem(action1);
-		assertNotNull(action1);
-	}
-	
-	@Test
-	public void testSaveasActionConstructor(){
-		action1 = ea.getSaveAsAction();
-		ActionComboBox box = new ActionComboBox();
-		box.addItem(action1);
-		assertNotNull(action1);
-	}
+
 	@Test
 	public void testSaveCopyActionConstructor(){
 		action1 = ea.getCopyAction();
