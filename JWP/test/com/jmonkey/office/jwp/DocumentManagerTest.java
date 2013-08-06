@@ -279,12 +279,26 @@ public class DocumentManagerTest {
 	
 	@Test
 	public void testEditorSaveAs() {
-		DocumentFrame df = manager.active();
+		DocumentFrame df = manager.getOpenDocument("New Document1 [text/rtf]");
 		
 		String[] contents = {"banana", "apple"};
         this.createFile("dmtests/saveAs.txt", contents);
         File testFile = new File("dmtests/saveAs.txt");
         assertTrue(testFile.exists());
+        
+        File newFile = new File("test/files/tmp.rtf");
+        
+        try {
+            this.manager.activateFrame(df);
+            Thread.sleep(100);
+            newFile.delete();
+            df.getEditor().getTextComponent().getDocument().insertString(0, "foo", null);
+        } catch (Exception e) {
+            fail("");
+        }
+        System.gc();
+
+        
         try {
             saveAsChooser oc = new saveAsChooser(manager, df.getEditor()); 
             Thread p = new Thread(oc);
@@ -292,6 +306,7 @@ public class DocumentManagerTest {
             Thread.sleep(500);
             this.activateFileChooser(testFile);
             p.join(500);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             fail("");
         }
