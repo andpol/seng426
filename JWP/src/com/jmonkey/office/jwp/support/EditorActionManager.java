@@ -35,6 +35,8 @@ import com.jmonkey.office.jwp.support.editors.Editor;
 import com.jmonkey.office.jwp.support.images.Loader;
 
 public class EditorActionManager extends ActionManager {
+	
+	private static final long serialVersionUID = -8993801202531452275L;
 	// Modifier Constants
 	public static final int COLOUR_BLACK = Color.black.getRGB();
 	public static final int COLOUR_BLUE = Color.blue.getRGB();

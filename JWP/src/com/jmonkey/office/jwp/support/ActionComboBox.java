@@ -12,6 +12,8 @@ import javax.swing.JComboBox;
  * General purpose Action combo-box class.
  */
 public final class ActionComboBox extends JComboBox implements ItemListener {
+	
+	private static final long serialVersionUID = -8993807202531452275L;
 	private final Hashtable m_actions = new Hashtable();
 
 	public ActionComboBox() {

@@ -82,6 +82,8 @@ public final class PropertySheetDialog extends JDialog {
 			case 1:
 				m_properties.setProperty(m_keys[rowIndex].toString(), val.toString());
 				break;
+			default:
+				break;
 			}
 		}
 	}
