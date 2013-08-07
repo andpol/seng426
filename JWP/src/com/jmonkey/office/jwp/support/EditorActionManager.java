@@ -427,7 +427,7 @@ public class EditorActionManager extends ActionManager {
 		public void actionPerformed(ActionEvent e) {
 			Editor target = EditorActionManager.getActiveEditor();
 			if (target != null) {
-				target.getTextComponent().cut();
+				target.cut();
 			}
 		}
 	}
@@ -441,7 +441,7 @@ public class EditorActionManager extends ActionManager {
 		public void actionPerformed(ActionEvent e) {
 			Editor target = EditorActionManager.getActiveEditor();
 			if (target != null) {
-				target.getTextComponent().copy();
+				target.copy();
 			}
 		}
 	}
@@ -455,7 +455,7 @@ public class EditorActionManager extends ActionManager {
 		public void actionPerformed(ActionEvent e) {
 			Editor target = EditorActionManager.getActiveEditor();
 			if (target != null) {
-				target.getTextComponent().paste();
+				target.paste();
 			}
 		}
 	}

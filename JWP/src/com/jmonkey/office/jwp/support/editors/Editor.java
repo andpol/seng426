@@ -268,6 +268,27 @@ public abstract class Editor extends JPanel {
 	public abstract void setCurrentParagraph(Element paragraph);
 
 	public abstract void setCurrentRun(Element run);
+	
+	/**
+	 * Perform the cut action on the selected text.
+	 */
+	public void cut() {
+		this.getTextComponent().cut();
+	}
+	
+	/**
+	 * Perform the copy action on the selected text.
+	 */
+	public void copy() {
+		this.getTextComponent().copy();
+	}
+	
+	/**
+	 * Paste text from the clipboard to the current caret position.
+	 */
+	public void paste() {
+		this.getTextComponent().paste();
+	}
 
 	public final void setFile(File file) {
 		m_file = file;
